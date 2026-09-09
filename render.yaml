@@ -1,0 +1,20 @@
+services:
+
+- type: web
+  name: savage-tech
+  runtime: node
+  plan: free
+  buildCommand: npm install
+  startCommand: npm start
+  autoDeploy: true
+  envVars:
+  - key: NODE_ENV
+    value: production
+  - key: ADMIN_PASSWORD
+    sync: false
+  - key: ADMIN_SESSION_TTL
+    value: "7200000"
+  - key: MAX_UPLOAD_SIZE
+    value: "10485760"
+  - key: TRUST_PROXY
+    value: "true"
