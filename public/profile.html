@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Savage Tech — Profile</title>
+
+<style>
+:root{
+  --red:#ff1a1a;
+  --red2:#ff3b3b;
+  --dark:#050505;
+  --panel:#0d0d0d;
+  --panel2:#121212;
+  --line:rgba(255,35,35,.22);
+  --text:#f5f5f5;
+  --muted:#888;
+  --green:#00ff88;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(255,0,0,.18),transparent 40%),
+    linear-gradient(180deg,#080808,#020202);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  background:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.scanline{
+  position:fixed;
+  left:0;
+  right:0;
+  height:2px;
+  background:rgba(255,0,0,.3);
+  box-shadow:0 0 15px rgba(255,0,0,.6);
+  animation:scan 5s linear infinite;
+  z-index:10;
+  pointer-events:none;
+}
+
+@keyframes scan{
+  from{top:-5%}
+  to{top:105%}
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:16px;
+  background:rgba(5,5,5,.9);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);
+}
+
+.header-inner{
+  max-width:900px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-icon{
+  width:42px;
+  height:42px;
+  border:1px solid var(--red);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 18px rgba(255,0,0,.25);
+}
+
+.brand-icon svg{
+  width:29px;
+  fill:none;
+  stroke:var(--red);
+  stroke-width:2;
+}
+
+.brand-title{
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:14px;
+}
+
+.brand-sub{
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:2px;
+  margin-top:3px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.35;transform:scale(.7)}
+}
+
+.container{
+  width:min(900px,calc(100% - 24px));
+  margin:28px auto 80px;
+}
+
+.profile-card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg,#111,#080808);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px 20px;
+  text-align:center;
+  box-shadow:0 15px 50px rgba(0,0,0,.5);
+}
+
+.profile-card:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(255,0,0,.07) 50%,
+    transparent 65%
+  );
+  animation:sweep 4s linear infinite;
+}
+
+@keyframes sweep{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
+}
+
+.avatar{
+  width:105px;
+  height:105px;
+  margin:auto;
+  border-radius:50%;
+  border:2px solid var(--red);
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle,#260000,#090909 65%);
+  box-shadow:
+    0 0 0 5px rgba(255,0,0,.06),
+    0 0 35px rgba(255,0,0,.35);
+  animation:avatarPulse 2.5s infinite;
+}
+
+@keyframes avatarPulse{
+  50%{
+    box-shadow:
+      0 0 0 9px rgba(255,0,0,.03),
+      0 0 50px rgba(255,0,0,.5);
+  }
+}
+
+.avatar svg{
+  width:65px;
+  height:65px;
+  fill:none;
+  stroke:var(--red2);
+  stroke-width:1.8;
+  filter:drop-shadow(0 0 6px rgba(255,0,0,.8));
+}
+
+.profile-name{
+  margin-top:18px;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.profile-tag{
+  margin-top:6px;
+  color:var(--red2);
+  font-size:11px;
+  letter-spacing:2px;
+}
+
+.profile-bio{
+  max-width:600px;
+  margin:15px auto 0;
+  color:#aaa;
+  line-height:1.6;
+  font-size:13px;
+}
+
+.badges{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+
+.badge{
+  padding:7px 11px;
+  border:1px solid var(--line);
+  border-radius:30px;
+  background:#090909;
+  color:#bbb;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.badge.active{
+  color:var(--red2);
+  border-color:rgba(255,0,0,.4);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:15px;
+}
+
+.stat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  transition:.25s;
+}
+
+.stat:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,0,0,.5);
+  box-shadow:0 10px 30px rgba(255,0,0,.08);
+}
+
+.stat-number{
+  font-size:24px;
+  font-weight:900;
+}
+
+.stat-label{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+
+.section{
+  margin-top:15px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:18px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.section-title h2{
+  font-size:13px;
+  letter-spacing:1.5px;
+}
+
+.section-title span{
+  color:var(--red);
+  font-size:10px;
+}
+
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.info-row:last-child{
+  border-bottom:0;
+}
+
+.info-label{
+  color:#777;
+  font-size:11px;
+}
+
+.info-value{
+  font-size:11px;
+  text-align:right;
+  word-break:break-word;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.btn{
+  border:1px solid var(--line);
+  background:#101010;
+  color:#eee;
+  padding:13px;
+  border-radius:11px;
+  cursor:pointer;
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:.8px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:var(--red);
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+.btn.primary{
+  background:linear-gradient(135deg,#a50000,#ff1717);
+  border-color:#ff3333;
+  box-shadow:0 0 20px rgba(255,0,0,.15);
+}
+
+.btn.danger{
+  color:#ff6666;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  background:#111;
+  border:1px solid var(--red);
+  border-radius:10px;
+  padding:12px 17px;
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:100;
+  box-shadow:0 0 25px rgba(255,0,0,.2);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+nav{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:20px;
+}
+
+nav a{
+  color:#999;
+  text-decoration:none;
+  font-size:10px;
+  padding:8px 10px;
+  border-bottom:1px solid transparent;
+}
+
+nav a:hover{
+  color:var(--red2);
+  border-color:var(--red);
+}
+
+footer{
+  text-align:center;
+  margin-top:30px;
+  color:#555;
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+@media(max-width:500px){
+  .grid,
+  .actions{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .profile-name{
+    font-size:21px;
+  }
+
+  .info-row{
+    align-items:flex-start;
+  }
+}
+
+@media(max-width:360px){
+  .grid,
+  .actions{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scanline"></div>
+
+<header>
+  <div class="header-inner">
+
+    <div class="brand">
+
+      <div class="brand-icon">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 20
+                   C35 20 27 30 27 43
+                   C27 57 38 67 50 67
+                   C62 67 73 57 73 43
+                   C73 30 65 20 50 20Z"/>
+          <path d="M27 43L10 35M27 52L8 52M31 60L15 70
+                   M73 43L90 35M73 52L92 52M69 60L85 70"/>
+          <path d="M50 67V84"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="brand-title">SAVAGE TECH</div>
+        <div class="brand-sub">SCORPION PROFILE CORE</div>
+      </div>
+
+    </div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      ONLINE
+    </div>
+
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="profile-card">
+
+    <div class="avatar">
+      <svg viewBox="0 0 100 100">
+        <path d="M50 15
+                 C31 15 20 29 20 47
+                 C20 66 34 79 50 79
+                 C66 79 80 66 80 47
+                 C80 29 69 15 50 15Z"/>
+        <path d="M20 40L5 32M20 52L3 52M24 64L9 75
+                 M80 40L95 32M80 52L97 52M76 64L91 75"/>
+        <path d="M50 79V94"/>
+        <circle cx="39" cy="45" r="3"/>
+        <circle cx="61" cy="45" r="3"/>
+      </svg>
+    </div>
+
+    <h1 class="profile-name" id="profileName">SAVAGE USER</h1>
+
+    <div class="profile-tag" id="profileTag">
+      SCORPION OPERATIVE
+    </div>
+
+    <p class="profile-bio" id="profileBio">
+      Welcome to the Savage Tech network. Your profile is connected to
+      the secure file distribution core.
+    </p>
+
+    <div class="badges">
+      <span class="badge active">● VERIFIED SESSION</span>
+      <span class="badge">SCORPION MEMBER</span>
+      <span class="badge">FILE ACCESS</span>
+    </div>
+
+  </section>
+
+  <section class="grid">
+
+    <div class="stat">
+      <div class="stat-number" id="downloads">0</div>
+      <div class="stat-label">DOWNLOADS</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-number" id="saved">0</div>
+      <div class="stat-label">SAVED FILES</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-number" id="countries">0</div>
+      <div class="stat-label">COUNTRIES</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-number" id="activity">LOW</div>
+      <div class="stat-label">ACTIVITY LEVEL</div>
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-title">
+      <h2>IDENTITY DATA</h2>
+      <span>SECURE</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">SESSION ID</span>
+      <span class="info-value" id="sessionId">Generating...</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">ACCOUNT STATUS</span>
+      <span class="info-value">ACTIVE</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">ACCESS LEVEL</span>
+      <span class="info-value">STANDARD</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">DEVICE</span>
+      <span class="info-value" id="device">Detecting...</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">PLATFORM</span>
+      <span class="info-value" id="platform">Detecting...</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">LANGUAGE</span>
+      <span class="info-value" id="language">Detecting...</span>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">LAST ACTIVE</span>
+      <span class="info-value" id="lastActive">Just now</span>
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-title">
+      <h2>PROFILE ACTIONS</h2>
+      <span>CONTROL</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="openSearch()">
+        SEARCH FILES
+      </button>
+
+      <button class="btn" onclick="openUpdates()">
+        VIEW UPDATES
+      </button>
+
+      <button class="btn" onclick="openSupport()">
+        SUPPORT
+      </button>
+
+      <button class="btn" onclick="refreshProfile()">
+        REFRESH DATA
+      </button>
+
+      <button class="btn danger" onclick="clearLocalData()">
+        CLEAR LOCAL DATA
+      </button>
+
+      <button class="btn" onclick="logout()">
+        END SESSION
+      </button>
+    </div>
+
+  </section>
+
+  <nav>
+    <a href="Main.html">MAIN</a>
+    <a href="Search.html">SEARCH</a>
+    <a href="updates.html">UPDATES</a>
+    <a href="Support.html">SUPPORT</a>
+  </nav>
+
+  <footer>
+    SAVAGE TECH // SCORPION PROTOCOL<br>
+    SECURE FILE NETWORK
+  </footer>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const API = {
+  profile: "/api/profile",
+  stats: "/api/stats",
+  session: "/api/session"
+};
+
+function toast(message){
+
+  const box = document.getElementById("toast");
+
+  box.textContent = message;
+  box.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(()=>{
+    box.classList.remove("show");
+  },2600);
+}
+
+function makeSessionId(){
+
+  const key = "savageTechSession";
+
+  let id = localStorage.getItem(key);
+
+  if(!id){
+
+    id =
+      "ST-" +
+      cryptoRandom(5) +
+      "-" +
+      cryptoRandom(5);
+
+    localStorage.setItem(key,id);
+  }
+
+  return id;
+}
+
+function cryptoRandom(length){
+
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let output="";
+
+  if(window.crypto && crypto.getRandomValues){
+
+    const values=new Uint32Array(length);
+
+    crypto.getRandomValues(values);
+
+    for(let i=0;i<length;i++){
+      output+=chars[values[i]%chars.length];
+    }
+
+  }else{
+
+    for(let i=0;i<length;i++){
+      output+=chars[Math.floor(Math.random()*chars.length)];
+    }
+
+  }
+
+  return output;
+}
+
+function detectDevice(){
+
+  const ua=navigator.userAgent.toLowerCase();
+
+  if(/android/.test(ua)) return "Android";
+
+  if(/iphone|ipad|ipod/.test(ua)) return "iOS";
+
+  if(/windows/.test(ua)) return "Windows";
+
+  if(/macintosh|mac os/.test(ua)) return "macOS";
+
+  if(/linux/.test(ua)) return "Linux";
+
+  return "Unknown";
+}
+
+function detectPlatform(){
+
+  const ua=navigator.userAgent.toLowerCase();
+
+  if(/chrome/.test(ua) && !/edge/.test(ua)){
+    return "Chrome";
+  }
+
+  if(/edg/.test(ua)){
+    return "Edge";
+  }
+
+  if(/firefox/.test(ua)){
+    return "Firefox";
+  }
+
+  if(/safari/.test(ua) && !/chrome/.test(ua)){
+    return "Safari";
+  }
+
+  return "Unknown Browser";
+}
+
+function loadLocalProfile(){
+
+  const profile = JSON.parse(
+    localStorage.getItem("savageTechProfile") || "{}"
+  );
+
+  if(profile.name){
+    document.getElementById("profileName").textContent =
+      profile.name;
+  }
+
+  if(profile.tag){
+    document.getElementById("profileTag").textContent =
+      profile.tag;
+  }
+
+  if(profile.bio){
+    document.getElementById("profileBio").textContent =
+      profile.bio;
+  }
+
+  document.getElementById("sessionId").textContent =
+    makeSessionId();
+
+  document.getElementById("device").textContent =
+    detectDevice();
+
+  document.getElementById("platform").textContent =
+    detectPlatform();
+
+  document.getElementById("language").textContent =
+    navigator.language || "Unknown";
+}
+
+async function loadServerProfile(){
+
+  try{
+
+    const response = await fetch(API.profile,{
+      credentials:"include"
+    });
+
+    if(!response.ok) return;
+
+    const data = await response.json();
+
+    const profile=data.profile || data;
+
+    if(profile.name){
+      document.getElementById("profileName").textContent =
+        profile.name;
+    }
+
+    if(profile.tag){
+      document.getElementById("profileTag").textContent =
+        profile.tag;
+    }
+
+    if(profile.bio){
+      document.getElementById("profileBio").textContent =
+        profile.bio;
+    }
+
+    if(profile.downloads !== undefined){
+      document.getElementById("downloads").textContent =
+        profile.downloads;
+    }
+
+    if(profile.saved !== undefined){
+      document.getElementById("saved").textContent =
+        profile.saved;
+    }
+
+    if(profile.countries !== undefined){
+      document.getElementById("countries").textContent =
+        profile.countries;
+    }
+
+    if(profile.activity){
+      document.getElementById("activity").textContent =
+        String(profile.activity).toUpperCase();
+    }
+
+  }catch(error){
+
+    console.log("Profile API unavailable:",error);
+
+  }
+}
+
+async function loadStats(){
+
+  try{
+
+    const response=await fetch(API.stats,{
+      credentials:"include"
+    });
+
+    if(!response.ok) return;
+
+    const data=await response.json();
+
+    const stats=data.stats || data;
+
+    if(stats.downloads !== undefined){
+      document.getElementById("downloads").textContent =
+        stats.downloads;
+    }
+
+    if(stats.saved !== undefined){
+      document.getElementById("saved").textContent =
+        stats.saved;
+    }
+
+    if(stats.countries !== undefined){
+      document.getElementById("countries").textContent =
+        stats.countries;
+    }
+
+  }catch(error){
+
+    console.log("Stats unavailable:",error);
+
+  }
+}
+
+function openSearch(){
+  location.href="Search.html";
+}
+
+function openUpdates(){
+  location.href="updates.html";
+}
+
+function openSupport(){
+  location.href="Support.html";
+}
+
+function refreshProfile(){
+
+  loadLocalProfile();
+  loadServerProfile();
+  loadStats();
+
+  document.getElementById("lastActive").textContent =
+    "Just now";
+
+  toast("PROFILE DATA REFRESHED");
+}
+
+function clearLocalData(){
+
+  localStorage.removeItem("savageTechProfile");
+  localStorage.removeItem("savageTechSession");
+
+  toast("LOCAL PROFILE DATA CLEARED");
+
+  setTimeout(()=>{
+    location.reload();
+  },900);
+}
+
+function logout(){
+
+  localStorage.removeItem("savageTechSession");
+
+  toast("SESSION ENDED");
+
+  setTimeout(()=>{
+    location.href="Main.html";
+  },900);
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+  loadLocalProfile();
+  loadServerProfile();
+  loadStats();
+
+});
+
+</script>
+
+</body>
+</html>
