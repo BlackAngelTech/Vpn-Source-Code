@@ -1,0 +1,19 @@
+{
+"name": "savage-tech",
+"version": "1.0.0",
+"description": "Savage Tech - Scorpion Protocol VPN and configuration file platform",
+"main": "Server.js",
+"scripts": {
+"start": "node Server.js",
+"dev": "node --watch Server.js"
+},
+"engines": {
+"node": ">=20"
+},
+"dependencies": {
+"cookie-parser": "^1.4.7",
+"dotenv": "^16.6.1",
+"express": "^5.1.0",
+"multer": "^2.0.2"
+}
+}
