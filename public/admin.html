@@ -1,0 +1,2974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#070707">
+<title>Savage Tech // Admin Core</title>
+
+<style>
+:root{
+  --red:#ff1717;
+  --red2:#ff4a4a;
+  --red3:#8f0000;
+  --black:#030303;
+  --panel:#0b0b0b;
+  --panel2:#101010;
+  --line:rgba(255,30,30,.20);
+  --text:#f4f4f4;
+  --muted:#777;
+  --green:#00ff91;
+  --yellow:#ffc400;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(255,0,0,.16),transparent 40%),
+    #030303;
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 3px,
+    rgba(255,0,0,.018) 4px
+  );
+}
+
+.hidden{
+  display:none!important;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-box{
+  width:min(440px,100%);
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg,rgba(255,0,0,.07),transparent 45%),
+    var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:35px 25px;
+  text-align:center;
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.7),
+    0 0 50px rgba(255,0,0,.08);
+}
+
+.login-box::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:2px;
+  background:var(--red);
+  box-shadow:0 0 20px var(--red);
+  animation:loginScan 3s linear infinite;
+}
+
+@keyframes loginScan{
+  to{left:100%}
+}
+
+.logo{
+  width:92px;
+  height:92px;
+  margin:0 auto 18px;
+  border:1px solid var(--red);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  box-shadow:
+    0 0 25px rgba(255,0,0,.25),
+    inset 0 0 25px rgba(255,0,0,.08);
+  animation:logoPulse 2.5s infinite;
+}
+
+@keyframes logoPulse{
+  50%{
+    box-shadow:
+      0 0 45px rgba(255,0,0,.45),
+      inset 0 0 30px rgba(255,0,0,.12);
+  }
+}
+
+.logo svg{
+  width:62px;
+  fill:none;
+  stroke:var(--red2);
+  stroke-width:2;
+  filter:drop-shadow(0 0 7px rgba(255,0,0,.8));
+}
+
+.login-title{
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:4px;
+}
+
+.login-sub{
+  margin-top:7px;
+  color:var(--red2);
+  font-size:9px;
+  letter-spacing:3px;
+}
+
+.security-line{
+  margin:24px 0;
+  color:#555;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+.input-wrap input{
+  width:100%;
+  padding:15px 45px 15px 15px;
+  color:white;
+  background:#050505;
+  border:1px solid #222;
+  border-radius:11px;
+  outline:none;
+  text-align:center;
+  letter-spacing:4px;
+}
+
+.input-wrap input:focus{
+  border-color:var(--red);
+  box-shadow:0 0 20px rgba(255,0,0,.12);
+}
+
+.eye{
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:0;
+  color:#777;
+  cursor:pointer;
+}
+
+.login-btn{
+  width:100%;
+  margin-top:12px;
+  padding:15px;
+  border:1px solid var(--red);
+  border-radius:11px;
+  background:linear-gradient(135deg,#720000,#ed1111);
+  color:#fff;
+  cursor:pointer;
+  font-weight:900;
+  letter-spacing:2px;
+  box-shadow:0 0 25px rgba(255,0,0,.12);
+  transition:.2s;
+}
+
+.login-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 35px rgba(255,0,0,.25);
+}
+
+.login-status{
+  min-height:18px;
+  margin-top:13px;
+  color:#ff5757;
+  font-size:10px;
+}
+
+.login-footer{
+  margin-top:25px;
+  color:#444;
+  font-size:8px;
+  letter-spacing:2px;
+}
+
+/* =========================
+   ADMIN APP
+========================= */
+
+#adminApp{
+  min-height:100vh;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:66px;
+  background:rgba(5,5,5,.93);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(15px);
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+}
+
+.topbar-inner{
+  width:min(1400px,100%);
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.brand-mark{
+  width:37px;
+  height:37px;
+  border:1px solid var(--red);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+}
+
+.brand-mark svg{
+  width:25px;
+  fill:none;
+  stroke:var(--red);
+  stroke-width:2;
+}
+
+.brand-name{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.brand-core{
+  color:#666;
+  font-size:8px;
+  letter-spacing:1.5px;
+  margin-top:3px;
+}
+
+.top-status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+  animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+  50%{opacity:.3}
+}
+
+.menu-btn{
+  display:none;
+  background:#111;
+  border:1px solid var(--line);
+  color:#fff;
+  padding:9px 11px;
+  border-radius:8px;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.layout{
+  width:min(1400px,100%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:235px 1fr;
+  min-height:calc(100vh - 66px);
+}
+
+.sidebar{
+  border-right:1px solid var(--line);
+  background:rgba(7,7,7,.85);
+  padding:18px 12px;
+}
+
+.side-label{
+  color:#444;
+  font-size:8px;
+  letter-spacing:2px;
+  padding:10px 10px 7px;
+}
+
+.nav-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 11px;
+  margin-bottom:4px;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:#888;
+  cursor:pointer;
+  text-align:left;
+  font-size:10px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.nav-item:hover,
+.nav-item.active{
+  color:#fff;
+  background:rgba(255,0,0,.07);
+  border-color:var(--line);
+}
+
+.nav-item.active{
+  box-shadow:inset 3px 0 0 var(--red);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+  color:var(--red2);
+}
+
+.main{
+  padding:25px;
+  min-width:0;
+}
+
+.page{
+  display:none;
+  animation:pageIn .25s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.page-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.page-title{
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.page-desc{
+  color:#666;
+  font-size:9px;
+  margin-top:6px;
+  letter-spacing:1px;
+}
+
+.timestamp{
+  color:#555;
+  font-size:9px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:
+    linear-gradient(145deg,rgba(255,0,0,.035),transparent 50%),
+    var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+}
+
+.stat-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  width:80px;
+  height:80px;
+  right:-35px;
+  bottom:-35px;
+  border-radius:50%;
+  border:1px solid rgba(255,0,0,.12);
+}
+
+.stat-label{
+  color:#666;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+
+.stat-value{
+  margin-top:9px;
+  font-size:25px;
+  font-weight:900;
+}
+
+.stat-change{
+  margin-top:7px;
+  font-size:8px;
+  color:var(--green);
+}
+
+.section-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:13px;
+  margin-top:13px;
+}
+
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.card-title{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1.2px;
+}
+
+.card-tag{
+  color:var(--red2);
+  font-size:8px;
+  letter-spacing:1px;
+}
+
+.activity{
+  display:flex;
+  gap:11px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.activity:last-child{
+  border-bottom:0;
+}
+
+.activity-icon{
+  width:30px;
+  height:30px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  color:var(--red2);
+  flex:none;
+}
+
+.activity-main{
+  min-width:0;
+}
+
+.activity-title{
+  font-size:10px;
+  font-weight:700;
+}
+
+.activity-time{
+  color:#555;
+  font-size:8px;
+  margin-top:4px;
+}
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.action{
+  padding:14px;
+  background:#0d0d0d;
+  color:#eee;
+  border:1px solid #1c1c1c;
+  border-radius:10px;
+  cursor:pointer;
+  text-align:left;
+  transition:.2s;
+}
+
+.action:hover{
+  border-color:var(--red);
+  transform:translateY(-2px);
+}
+
+.action strong{
+  display:block;
+  font-size:10px;
+}
+
+.action span{
+  display:block;
+  margin-top:5px;
+  color:#555;
+  font-size:8px;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  display:block;
+  color:#777;
+  font-size:9px;
+  letter-spacing:1px;
+  margin-bottom:7px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  background:#060606;
+  color:#eee;
+  border:1px solid #222;
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+}
+
+.field textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:var(--red);
+}
+
+.btn{
+  border:1px solid #292929;
+  background:#111;
+  color:#eee;
+  padding:11px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:var(--red);
+}
+
+.btn.red{
+  border-color:var(--red);
+  background:linear-gradient(135deg,#750000,#d90e0e);
+}
+
+.btn.green{
+  color:var(--green);
+}
+
+.btn.danger{
+  color:#ff5a5a;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+}
+
+th{
+  color:#555;
+  font-size:8px;
+  letter-spacing:1px;
+  text-align:left;
+  background:#090909;
+}
+
+th,
+td{
+  padding:13px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+td{
+  font-size:9px;
+  color:#bbb;
+}
+
+tr:last-child td{
+  border-bottom:0;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 7px;
+  border-radius:20px;
+  font-size:7px;
+  letter-spacing:.7px;
+  border:1px solid #292929;
+}
+
+.badge.online{
+  color:var(--green);
+  border-color:rgba(0,255,145,.2);
+}
+
+.badge.red{
+  color:#ff5b5b;
+  border-color:rgba(255,0,0,.25);
+}
+
+/* =========================
+   UPLOAD
+========================= */
+
+.dropzone{
+  border:1px dashed rgba(255,0,0,.4);
+  border-radius:13px;
+  padding:35px 20px;
+  text-align:center;
+  background:rgba(255,0,0,.025);
+  transition:.2s;
+  cursor:pointer;
+}
+
+.dropzone:hover,
+.dropzone.drag{
+  background:rgba(255,0,0,.07);
+  border-color:var(--red);
+}
+
+.drop-icon{
+  font-size:30px;
+  color:var(--red2);
+}
+
+.drop-title{
+  margin-top:10px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.drop-desc{
+  margin-top:5px;
+  color:#555;
+  font-size:8px;
+}
+
+/* =========================
+   SYSTEM
+========================= */
+
+.system-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.system-row:last-child{
+  border-bottom:0;
+}
+
+.system-name{
+  font-size:10px;
+}
+
+.system-detail{
+  color:#555;
+  font-size:8px;
+  margin-top:4px;
+}
+
+.toggle{
+  width:42px;
+  height:23px;
+  background:#222;
+  border-radius:20px;
+  padding:3px;
+  cursor:pointer;
+  flex:none;
+}
+
+.toggle span{
+  display:block;
+  width:17px;
+  height:17px;
+  background:#666;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.toggle.on{
+  background:#6d0000;
+}
+
+.toggle.on span{
+  transform:translateX(19px);
+  background:var(--red);
+  box-shadow:0 0 10px rgba(255,0,0,.5);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:500;
+  max-width:330px;
+  background:#0e0e0e;
+  border:1px solid var(--red);
+  border-radius:10px;
+  padding:13px 16px;
+  font-size:9px;
+  box-shadow:0 15px 50px rgba(0,0,0,.7);
+  transform:translateY(20px);
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+.toast.success{
+  border-color:var(--green);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .section-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:760px){
+
+  .top-status{
+    display:none;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .layout{
+    display:block;
+  }
+
+  .sidebar{
+    position:fixed;
+    top:66px;
+    left:0;
+    bottom:0;
+    width:250px;
+    z-index:90;
+    transform:translateX(-105%);
+    transition:.25s;
+    box-shadow:20px 0 50px rgba(0,0,0,.5);
+  }
+
+  .sidebar.open{
+    transform:none;
+  }
+
+  .main{
+    padding:17px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .page-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media(max-width:480px){
+
+  .stats-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .stat-card{
+    padding:14px;
+  }
+
+  .stat-value{
+    font-size:21px;
+  }
+
+  .quick-grid{
+    grid-template-columns:1fr;
+  }
+
+  .brand-name{
+    font-size:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOGIN SCREEN
+===================================================== -->
+
+<section id="loginScreen">
+
+  <div class="login-box">
+
+    <div class="logo">
+      <svg viewBox="0 0 100 100">
+        <path d="M50 18
+                 C34 18 25 30 25 44
+                 C25 59 36 70 50 70
+                 C64 70 75 59 75 44
+                 C75 30 66 18 50 18Z"/>
+        <path d="M25 40L8 31
+                 M25 51L6 51
+                 M29 62L13 74
+                 M75 40L92 31
+                 M75 51L94 51
+                 M71 62L87 74
+                 M50 70V90"/>
+        <circle cx="40" cy="43" r="2.5"/>
+        <circle cx="60" cy="43" r="2.5"/>
+      </svg>
+    </div>
+
+    <div class="login-title">ADMIN CORE</div>
+
+    <div class="login-sub">
+      SAVAGE TECH // SCORPION PROTOCOL
+    </div>
+
+    <div class="security-line">
+      ▸ RESTRICTED CONTROL TERMINAL ◂
+    </div>
+
+    <div class="input-wrap">
+
+      <input
+        id="adminPassword"
+        type="password"
+        placeholder="ADMIN ACCESS KEY"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter')authenticate()"
+      >
+
+      <button class="eye" onclick="togglePassword()">◉</button>
+
+    </div>
+
+    <button class="login-btn" onclick="authenticate()">
+      AUTHENTICATE
+    </button>
+
+    <div class="login-status" id="loginStatus"></div>
+
+    <div class="login-footer">
+      AUTHORIZED PERSONNEL ONLY // SAVAGE TECH
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ADMIN APPLICATION
+===================================================== -->
+
+<section id="adminApp" class="hidden">
+
+<header class="topbar">
+
+  <div class="topbar-inner">
+
+    <div class="brand">
+
+      <div class="brand-mark">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 18C34 18 25 30 25 44C25 59 36 70 50 70C64 70 75 59 75 44C75 30 66 18 50 18Z"/>
+          <path d="M25 40L8 31M25 51L6 51M29 62L13 74M75 40L92 31M75 51L94 51M71 62L87 74M50 70V90"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="brand-name">SAVAGE TECH</div>
+        <div class="brand-core">ADMIN CONTROL CORE</div>
+      </div>
+
+    </div>
+
+    <div class="top-status">
+      <span class="dot"></span>
+      SYSTEM ONLINE
+    </div>
+
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+  </div>
+
+</header>
+
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="side-label">COMMAND</div>
+
+    <button class="nav-item active" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">⌂</span>
+      Dashboard
+    </button>
+
+    <button class="nav-item" onclick="showPage('files',this)">
+      <span class="nav-icon">▣</span>
+      File Database
+    </button>
+
+    <button class="nav-item" onclick="showPage('upload',this)">
+      <span class="nav-icon">↑</span>
+      Upload Files
+    </button>
+
+    <button class="nav-item" onclick="showPage('updates',this)">
+      <span class="nav-icon">◈</span>
+      Updates
+    </button>
+
+    <button class="nav-item" onclick="showPage('notifications',this)">
+      <span class="nav-icon">!</span>
+      Notifications
+    </button>
+
+    <div class="side-label">NETWORK</div>
+
+    <button class="nav-item" onclick="showPage('users',this)">
+      <span class="nav-icon">♙</span>
+      Users
+    </button>
+
+    <button class="nav-item" onclick="showPage('hosts',this)">
+      <span class="nav-icon">⌁</span>
+      Public Hosts
+    </button>
+
+    <button class="nav-item" onclick="showPage('reports',this)">
+      <span class="nav-icon">⚑</span>
+      Reports
+    </button>
+
+    <div class="side-label">SYSTEM</div>
+
+    <button class="nav-item" onclick="showPage('statistics',this)">
+      <span class="nav-icon">◒</span>
+      Statistics
+    </button>
+
+    <button class="nav-item" onclick="showPage('logs',this)">
+      <span class="nav-icon">≡</span>
+      Activity Logs
+    </button>
+
+    <button class="nav-item" onclick="showPage('settings',this)">
+      <span class="nav-icon">⚙</span>
+      System Settings
+    </button>
+
+    <button class="nav-item" onclick="logout()">
+      <span class="nav-icon">↪</span>
+      Lock Admin
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+
+    <section class="page active" id="page-dashboard">
+
+      <div class="page-head">
+
+        <div>
+          <div class="page-title">COMMAND CENTER</div>
+          <div class="page-desc">
+            CENTRAL CONTROL FOR THE SAVAGE TECH NETWORK
+          </div>
+        </div>
+
+        <div class="timestamp" id="clock"></div>
+
+      </div>
+
+
+      <div class="stats-grid">
+
+        <div class="card stat-card">
+          <div class="stat-label">TOTAL FILES</div>
+          <div class="stat-value" id="totalFiles">248</div>
+          <div class="stat-change">▲ DATABASE ACTIVE</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">DOWNLOADS</div>
+          <div class="stat-value" id="totalDownloads">14,892</div>
+          <div class="stat-change">▲ LIVE COUNTER</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">COUNTRIES</div>
+          <div class="stat-value" id="totalCountries">27</div>
+          <div class="stat-change">▲ NETWORK COVERAGE</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">USERS</div>
+          <div class="stat-value" id="totalUsers">1,406</div>
+          <div class="stat-change">▲ ACTIVE SESSIONS</div>
+        </div>
+
+      </div>
+
+
+      <div class="section-grid">
+
+        <div class="card">
+
+          <div class="card-head">
+            <div class="card-title">RECENT ACTIVITY</div>
+            <div class="card-tag">LIVE</div>
+          </div>
+
+          <div id="activityFeed">
+
+            <div class="activity">
+              <div class="activity-icon">↑</div>
+              <div class="activity-main">
+                <div class="activity-title">
+                  New VPN configuration uploaded
+                </div>
+                <div class="activity-time">2 minutes ago</div>
+              </div>
+            </div>
+
+            <div class="activity">
+              <div class="activity-icon">↓</div>
+              <div class="activity-main">
+                <div class="activity-title">
+                  File download completed
+                </div>
+                <div class="activity-time">7 minutes ago</div>
+              </div>
+            </div>
+
+            <div class="activity">
+              <div class="activity-icon">◈</div>
+              <div class="activity-main">
+                <div class="activity-title">
+                  System update published
+                </div>
+                <div class="activity-time">18 minutes ago</div>
+              </div>
+            </div>
+
+            <div class="activity">
+              <div class="activity-icon">!</div>
+              <div class="activity-main">
+                <div class="activity-title">
+                  Support report received
+                </div>
+                <div class="activity-time">31 minutes ago</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-head">
+            <div class="card-title">QUICK ACTIONS</div>
+            <div class="card-tag">CONTROL</div>
+          </div>
+
+          <div class="quick-grid">
+
+            <button class="action" onclick="showPageByName('upload')">
+              <strong>↑ UPLOAD FILE</strong>
+              <span>Add a new configuration</span>
+            </button>
+
+            <button class="action" onclick="showPageByName('updates')">
+              <strong>◈ POST UPDATE</strong>
+              <span>Publish a transmission</span>
+            </button>
+
+            <button class="action" onclick="showPageByName('notifications')">
+              <strong>! NOTIFICATION</strong>
+              <span>Send a system alert</span>
+            </button>
+
+            <button class="action" onclick="showPageByName('reports')">
+              <strong>⚑ REPORTS</strong>
+              <span>Review support issues</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card" style="margin-top:13px">
+
+        <div class="card-head">
+          <div class="card-title">SYSTEM HEALTH</div>
+          <div class="card-tag">SCORPION MONITOR</div>
+        </div>
+
+        <div class="system-row">
+          <div>
+            <div class="system-name">API SERVER</div>
+            <div class="system-detail">Backend response service</div>
+          </div>
+          <span class="badge online">ONLINE</span>
+        </div>
+
+        <div class="system-row">
+          <div>
+            <div class="system-name">FILE DATABASE</div>
+            <div class="system-detail">VPN configuration storage</div>
+          </div>
+          <span class="badge online">ONLINE</span>
+        </div>
+
+        <div class="system-row">
+          <div>
+            <div class="system-name">UPLOAD SERVICE</div>
+            <div class="system-detail">File ingestion endpoint</div>
+          </div>
+          <span class="badge online">READY</span>
+        </div>
+
+        <div class="system-row">
+          <div>
+            <div class="system-name">UPDATE CHANNEL</div>
+            <div class="system-detail">Public announcement service</div>
+          </div>
+          <span class="badge online">LIVE</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FILE DATABASE -->
+
+    <section class="page" id="page-files">
+
+      <div class="page-head">
+
+        <div>
+          <div class="page-title">FILE DATABASE</div>
+          <div class="page-desc">
+            MANAGE PUBLISHED CONFIGURATION FILES
+          </div>
+        </div>
+
+        <button class="btn red" onclick="showPageByName('upload')">
+          + UPLOAD FILE
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <div class="card-head">
+          <div class="card-title">PUBLISHED FILES</div>
+          <div class="card-tag">DATABASE</div>
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>FILE</th>
+                <th>COUNTRY</th>
+                <th>NETWORK</th>
+                <th>TYPE</th>
+                <th>DOWNLOADS</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+
+            <tbody id="filesTable">
+
+              <tr>
+                <td>Econet Premium Config</td>
+                <td>Zimbabwe</td>
+                <td>Econet</td>
+                <td>OVPN</td>
+                <td>124</td>
+                <td><span class="badge online">PUBLISHED</span></td>
+                <td>
+                  <button class="btn danger" onclick="deleteItem(this,'file')">
+                    DELETE
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>MTN Tunnel Config</td>
+                <td>South Africa</td>
+                <td>MTN</td>
+                <td>EHI</td>
+                <td>87</td>
+                <td><span class="badge online">PUBLISHED</span></td>
+                <td>
+                  <button class="btn danger" onclick="deleteItem(this,'file')">
+                    DELETE
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>NetOne Secure Profile</td>
+                <td>Zimbabwe</td>
+                <td>NetOne</td>
+                <td>VPN</td>
+                <td>63</td>
+                <td><span class="badge online">PUBLISHED</span></td>
+                <td>
+                  <button class="btn danger" onclick="deleteItem(this,'file')">
+                    DELETE
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- UPLOAD -->
+
+    <section class="page" id="page-upload">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">UPLOAD FILE</div>
+          <div class="page-desc">
+            ADD AN AUTHORIZED FILE TO THE DATABASE
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <form id="uploadForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>FILE NAME</label>
+              <input
+                name="name"
+                required
+                placeholder="Example: Econet Premium Config"
+              >
+            </div>
+
+            <div class="field">
+              <label>COUNTRY</label>
+              <input
+                name="country"
+                required
+                placeholder="Zimbabwe"
+              >
+            </div>
+
+            <div class="field">
+              <label>NETWORK</label>
+              <input
+                name="network"
+                required
+                placeholder="Econet"
+              >
+            </div>
+
+            <div class="field">
+              <label>FILE TYPE</label>
+              <select name="type">
+                <option>OVPN</option>
+                <option>EHI</option>
+                <option>VPN</option>
+                <option>HOST</option>
+                <option>OTHER</option>
+              </select>
+            </div>
+
+            <div class="field full">
+
+              <label>CONFIGURATION FILE</label>
+
+              <div
+                class="dropzone"
+                id="dropzone"
+                onclick="document.getElementById('fileInput').click()"
+              >
+
+                <div class="drop-icon">↑</div>
+
+                <div class="drop-title">
+                  DROP FILE HERE OR TAP TO SELECT
+                </div>
+
+                <div class="drop-desc" id="fileName">
+                  Authorized files only
+                </div>
+
+              </div>
+
+              <input
+                type="file"
+                id="fileInput"
+                hidden
+              >
+
+            </div>
+
+            <div class="field full">
+
+              <label>DESCRIPTION</label>
+
+              <textarea
+                name="description"
+                placeholder="Describe this file..."
+              ></textarea>
+
+            </div>
+
+          </div>
+
+          <button class="btn red" type="submit">
+            PUBLISH FILE
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- UPDATES -->
+
+    <section class="page" id="page-updates">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">UPDATES CHANNEL</div>
+          <div class="page-desc">
+            PUBLISH ANNOUNCEMENTS TO USERS
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <form id="updateForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>TITLE</label>
+              <input
+                name="title"
+                required
+                placeholder="New files added"
+              >
+            </div>
+
+            <div class="field">
+              <label>CATEGORY</label>
+              <select name="category">
+                <option>FILES</option>
+                <option>SYSTEM</option>
+                <option>MAINTENANCE</option>
+                <option>IMPORTANT</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>MESSAGE</label>
+              <textarea
+                name="message"
+                required
+                placeholder="Write your update..."
+              ></textarea>
+            </div>
+
+          </div>
+
+          <button class="btn red" type="submit">
+            PUBLISH UPDATE
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <section class="page" id="page-notifications">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">NOTIFICATIONS</div>
+          <div class="page-desc">
+            SEND SYSTEM ALERTS TO USERS
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <form id="notificationForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>NOTIFICATION TITLE</label>
+              <input
+                name="title"
+                required
+                placeholder="System notification"
+              >
+            </div>
+
+            <div class="field">
+              <label>PRIORITY</label>
+              <select name="priority">
+                <option>NORMAL</option>
+                <option>IMPORTANT</option>
+                <option>URGENT</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>MESSAGE</label>
+              <textarea
+                name="message"
+                required
+                placeholder="Notification message..."
+              ></textarea>
+            </div>
+
+          </div>
+
+          <button class="btn red" type="submit">
+            SEND NOTIFICATION
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- USERS -->
+
+    <section class="page" id="page-users">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">USERS</div>
+          <div class="page-desc">
+            ACCOUNT AND SESSION OVERVIEW
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>USER</th>
+                <th>SESSION</th>
+                <th>DEVICE</th>
+                <th>STATUS</th>
+                <th>LAST ACTIVE</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>User-001</td>
+                <td>ST-X7K2A</td>
+                <td>Android</td>
+                <td><span class="badge online">ONLINE</span></td>
+                <td>2 min ago</td>
+                <td><button class="btn danger" onclick="toast('Session revocation requires backend API')">REVOKE</button></td>
+              </tr>
+
+              <tr>
+                <td>User-002</td>
+                <td>ST-P9M4Q</td>
+                <td>Windows</td>
+                <td><span class="badge online">ONLINE</span></td>
+                <td>8 min ago</td>
+                <td><button class="btn danger" onclick="toast('Session revocation requires backend API')">REVOKE</button></td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOSTS -->
+
+    <section class="page" id="page-hosts">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">PUBLIC HOSTS</div>
+          <div class="page-desc">
+            MANAGE AUTHORIZED / PUBLIC HOST RECORDS
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <form id="hostForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>HOSTNAME</label>
+              <input
+                name="host"
+                required
+                placeholder="host.example.com"
+              >
+            </div>
+
+            <div class="field">
+              <label>NETWORK</label>
+              <input
+                name="network"
+                placeholder="Network"
+              >
+            </div>
+
+            <div class="field">
+              <label>COUNTRY</label>
+              <input
+                name="country"
+                placeholder="Zimbabwe"
+              >
+            </div>
+
+            <div class="field">
+              <label>STATUS</label>
+              <select name="status">
+                <option>ACTIVE</option>
+                <option>INACTIVE</option>
+              </select>
+            </div>
+
+          </div>
+
+          <button class="btn red" type="submit">
+            ADD PUBLIC HOST
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- REPORTS -->
+
+    <section class="page" id="page-reports">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">SUPPORT REPORTS</div>
+          <div class="page-desc">
+            REVIEW USER-SUBMITTED PROBLEMS
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>REPORT</th>
+                <th>TYPE</th>
+                <th>FILE</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+
+            <tbody id="reportsTable">
+
+              <tr>
+                <td>REP-001</td>
+                <td>Broken Download</td>
+                <td>Econet Premium Config</td>
+                <td>Today</td>
+                <td><span class="badge red">PENDING</span></td>
+                <td>
+                  <button class="btn green" onclick="resolveReport(this)">
+                    RESOLVE
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="page" id="page-statistics">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">STATISTICS</div>
+          <div class="page-desc">
+            NETWORK PERFORMANCE OVERVIEW
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+
+        <div class="card stat-card">
+          <div class="stat-label">TODAY DOWNLOADS</div>
+          <div class="stat-value">486</div>
+          <div class="stat-change">▲ 12.4%</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">WEEKLY DOWNLOADS</div>
+          <div class="stat-value">3,241</div>
+          <div class="stat-change">▲ 8.7%</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">ACTIVE USERS</div>
+          <div class="stat-value">318</div>
+          <div class="stat-change">▲ LIVE</div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-label">REPORTS</div>
+          <div class="stat-value">8</div>
+          <div class="stat-change">PENDING REVIEW</div>
+        </div>
+
+      </div>
+
+      <div class="card" style="margin-top:13px">
+
+        <div class="card-head">
+          <div class="card-title">TOP FILES</div>
+          <div class="card-tag">DOWNLOAD RANKING</div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-icon">1</div>
+          <div class="activity-main">
+            <div class="activity-title">
+              Econet Premium Config — 124 downloads
+            </div>
+            <div class="activity-time">Zimbabwe</div>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-icon">2</div>
+          <div class="activity-main">
+            <div class="activity-title">
+              MTN Tunnel Config — 87 downloads
+            </div>
+            <div class="activity-time">South Africa</div>
+          </div>
+        </div>
+
+        <div class="activity">
+          <div class="activity-icon">3</div>
+          <div class="activity-main">
+            <div class="activity-title">
+              NetOne Secure Profile — 63 downloads
+            </div>
+            <div class="activity-time">Zimbabwe</div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- LOGS -->
+
+    <section class="page" id="page-logs">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">ACTIVITY LOGS</div>
+          <div class="page-desc">
+            ADMIN AND SYSTEM EVENTS
+          </div>
+        </div>
+
+        <button class="btn" onclick="loadLogs()">
+          REFRESH
+        </button>
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>TIME</th>
+                <th>EVENT</th>
+                <th>ACTOR</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+
+            <tbody id="logsTable">
+
+              <tr>
+                <td>16:20:04</td>
+                <td>Admin dashboard opened</td>
+                <td>ADMIN</td>
+                <td><span class="badge online">SUCCESS</span></td>
+              </tr>
+
+              <tr>
+                <td>16:17:41</td>
+                <td>File download served</td>
+                <td>SYSTEM</td>
+                <td><span class="badge online">SUCCESS</span></td>
+              </tr>
+
+              <tr>
+                <td>16:11:29</td>
+                <td>Update channel checked</td>
+                <td>SYSTEM</td>
+                <td><span class="badge online">SUCCESS</span></td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section class="page" id="page-settings">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">SYSTEM SETTINGS</div>
+          <div class="page-desc">
+            SAVAGE TECH CORE CONFIGURATION
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <div class="system-row">
+
+          <div>
+            <div class="system-name">PUBLIC FILE DATABASE</div>
+            <div class="system-detail">
+              Allow users to browse published files
+            </div>
+          </div>
+
+          <div class="toggle on" onclick="toggleSetting(this)">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="system-row">
+
+          <div>
+            <div class="system-name">DOWNLOAD SERVICE</div>
+            <div class="system-detail">
+              Enable public file downloads
+            </div>
+          </div>
+
+          <div class="toggle on" onclick="toggleSetting(this)">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="system-row">
+
+          <div>
+            <div class="system-name">UPDATES CHANNEL</div>
+            <div class="system-detail">
+              Show administrator announcements
+            </div>
+          </div>
+
+          <div class="toggle on" onclick="toggleSetting(this)">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="system-row">
+
+          <div>
+            <div class="system-name">MAINTENANCE MODE</div>
+            <div class="system-detail">
+              Temporarily restrict public access
+            </div>
+          </div>
+
+          <div class="toggle" onclick="toggleSetting(this)">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="system-row">
+
+          <div>
+            <div class="system-name">NEW USER REGISTRATION</div>
+            <div class="system-detail">
+              Allow new sessions to be created
+            </div>
+          </div>
+
+          <div class="toggle on" onclick="toggleSetting(this)">
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card" style="margin-top:13px">
+
+        <div class="card-head">
+          <div class="card-title">SERVER CONNECTION</div>
+          <div class="card-tag">API</div>
+        </div>
+
+        <button class="btn red" onclick="checkAPI()">
+          CHECK API HEALTH
+        </button>
+
+        <p
+          id="apiStatus"
+          style="margin-top:12px;color:#555;font-size:9px"
+        >
+          Waiting for health check...
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+</section>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   SAVAGE TECH ADMIN CORE
+===================================================== */
+
+/*
+  DEMO ADMIN KEY
+
+  For this requested demo version the key is kept here.
+  IMPORTANT:
+  Client-side credentials are visible through page source.
+  Production authentication must be performed by Server.js.
+*/
+
+const ADMIN_KEY = "PIL922IAM839";
+
+const API = {
+  stats: "/api/stats",
+  files: "/api/files",
+  upload: "/api/files/upload",
+  updates: "/api/updates",
+  notifications: "/api/notifications",
+  reports: "/api/reports",
+  health: "/api/health",
+  logs: "/api/admin/logs"
+};
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function authenticate(){
+
+  const input =
+    document.getElementById("adminPassword");
+
+  const status =
+    document.getElementById("loginStatus");
+
+  const password=input.value;
+
+  if(!password){
+
+    status.textContent="ENTER ACCESS KEY";
+    return;
+  }
+
+  status.textContent="VERIFYING...";
+
+  setTimeout(()=>{
+
+    if(password===ADMIN_KEY){
+
+      sessionStorage.setItem(
+        "savageAdminAuthenticated",
+        "true"
+      );
+
+      status.style.color="var(--green)";
+      status.textContent="ACCESS GRANTED";
+
+      setTimeout(()=>{
+        document.getElementById("loginScreen")
+          .classList.add("hidden");
+
+        document.getElementById("adminApp")
+          .classList.remove("hidden");
+
+        loadDashboard();
+      },450);
+
+    }else{
+
+      status.style.color="#ff4444";
+      status.textContent="ACCESS DENIED";
+
+      input.value="";
+
+      setTimeout(()=>{
+        status.textContent="";
+      },1800);
+
+    }
+
+  },500);
+}
+
+
+function togglePassword(){
+
+  const input =
+    document.getElementById("adminPassword");
+
+  input.type =
+    input.type==="password"
+      ? "text"
+      : "password";
+}
+
+
+/* =====================================================
+   SESSION
+===================================================== */
+
+function checkSession(){
+
+  if(
+    sessionStorage.getItem(
+      "savageAdminAuthenticated"
+    )==="true"
+  ){
+
+    document.getElementById("loginScreen")
+      .classList.add("hidden");
+
+    document.getElementById("adminApp")
+      .classList.remove("hidden");
+
+    loadDashboard();
+  }
+}
+
+
+function logout(){
+
+  sessionStorage.removeItem(
+    "savageAdminAuthenticated"
+  );
+
+  location.reload();
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function showPage(name,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page=>{
+      page.classList.remove("active");
+    });
+
+  const target =
+    document.getElementById("page-"+name);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-item")
+    .forEach(item=>{
+      item.classList.remove("active");
+    });
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+}
+
+
+function showPageByName(name){
+
+  const button =
+    [...document.querySelectorAll(".nav-item")]
+      .find(el =>
+        el.getAttribute("onclick") &&
+        el.getAttribute("onclick")
+          .includes("'"+name+"'")
+      );
+
+  showPage(name,button);
+}
+
+
+function toggleSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function toast(message,success=false){
+
+  const box =
+    document.getElementById("toast");
+
+  box.textContent=message;
+
+  box.className =
+    "toast show" +
+    (success ? " success" : "");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer=setTimeout(()=>{
+    box.className="toast";
+  },2800);
+}
+
+
+/* =====================================================
+   CLOCK
+===================================================== */
+
+function updateClock(){
+
+  const now=new Date();
+
+  document.getElementById("clock")
+    .textContent =
+      now.toLocaleString();
+}
+
+setInterval(updateClock,1000);
+
+
+/* =====================================================
+   DASHBOARD API
+===================================================== */
+
+async function loadDashboard(){
+
+  updateClock();
+
+  try{
+
+    const response =
+      await fetch(API.stats,{
+        credentials:"include"
+      });
+
+    if(!response.ok) return;
+
+    const data=await response.json();
+
+    const stats=data.stats || data;
+
+    if(stats.files !== undefined)
+      document.getElementById("totalFiles")
+        .textContent=stats.files;
+
+    if(stats.downloads !== undefined)
+      document.getElementById("totalDownloads")
+        .textContent=stats.downloads;
+
+    if(stats.countries !== undefined)
+      document.getElementById("totalCountries")
+        .textContent=stats.countries;
+
+    if(stats.users !== undefined)
+      document.getElementById("totalUsers")
+        .textContent=stats.users;
+
+  }catch(error){
+
+    console.log(
+      "Dashboard API unavailable",
+      error
+    );
+
+  }
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const dropzone =
+  document.getElementById("dropzone");
+
+
+if(fileInput){
+
+  fileInput.addEventListener(
+    "change",
+    ()=>{
+      if(fileInput.files.length){
+
+        document.getElementById("fileName")
+          .textContent =
+            fileInput.files[0].name;
+      }
+    }
+  );
+
+}
+
+
+if(dropzone){
+
+  ["dragenter","dragover"].forEach(eventName=>{
+
+    dropzone.addEventListener(
+      eventName,
+      event=>{
+        event.preventDefault();
+        dropzone.classList.add("drag");
+      }
+    );
+
+  });
+
+
+  ["dragleave","drop"].forEach(eventName=>{
+
+    dropzone.addEventListener(
+      eventName,
+      event=>{
+        event.preventDefault();
+        dropzone.classList.remove("drag");
+      }
+    );
+
+  });
+
+
+  dropzone.addEventListener(
+    "drop",
+    event=>{
+
+      const files=event.dataTransfer.files;
+
+      if(files.length){
+
+        fileInput.files=files;
+
+        document.getElementById("fileName")
+          .textContent=files[0].name;
+      }
+
+    }
+  );
+
+}
+
+
+document
+  .getElementById("uploadForm")
+  .addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    const form=event.target;
+
+    if(!fileInput.files.length){
+
+      toast("SELECT A FILE FIRST");
+      return;
+    }
+
+    const body=new FormData(form);
+
+    body.append(
+      "file",
+      fileInput.files[0]
+    );
+
+    try{
+
+      const response=
+        await fetch(API.upload,{
+          method:"POST",
+          credentials:"include",
+          body
+        });
+
+      if(response.ok){
+
+        toast(
+          "FILE PUBLISHED SUCCESSFULLY",
+          true
+        );
+
+        form.reset();
+
+        document.getElementById("fileName")
+          .textContent=
+            "Authorized files only";
+
+      }else{
+
+        toast(
+          "UPLOAD REJECTED BY SERVER"
+        );
+
+      }
+
+    }catch(error){
+
+      toast(
+        "UPLOAD API UNAVAILABLE"
+      );
+
+    }
+
+  });
+
+
+/* =====================================================
+   UPDATE FORM
+===================================================== */
+
+document
+  .getElementById("updateForm")
+  .addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    const form=event.target;
+
+    const payload={
+      title:form.title.value,
+      category:form.category.value,
+      message:form.message.value
+    };
+
+    try{
+
+      const response=
+        await fetch(API.updates,{
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          credentials:"include",
+          body:JSON.stringify(payload)
+        });
+
+      if(response.ok){
+
+        toast(
+          "UPDATE PUBLISHED",
+          true
+        );
+
+        form.reset();
+
+      }else{
+
+        toast(
+          "UPDATE REJECTED"
+        );
+
+      }
+
+    }catch(error){
+
+      toast(
+        "UPDATE API UNAVAILABLE"
+      );
+
+    }
+
+  });
+
+
+/* =====================================================
+   NOTIFICATION FORM
+===================================================== */
+
+document
+  .getElementById("notificationForm")
+  .addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    const form=event.target;
+
+    const payload={
+      title:form.title.value,
+      priority:form.priority.value,
+      message:form.message.value
+    };
+
+    try{
+
+      const response=
+        await fetch(API.notifications,{
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          credentials:"include",
+          body:JSON.stringify(payload)
+        });
+
+      if(response.ok){
+
+        toast(
+          "NOTIFICATION SENT",
+          true
+        );
+
+        form.reset();
+
+      }else{
+
+        toast(
+          "NOTIFICATION REJECTED"
+        );
+
+      }
+
+    }catch(error){
+
+      toast(
+        "NOTIFICATION API UNAVAILABLE"
+      );
+
+    }
+
+  });
+
+
+/* =====================================================
+   PUBLIC HOST FORM
+===================================================== */
+
+document
+  .getElementById("hostForm")
+  .addEventListener("submit",async event=>{
+
+    event.preventDefault();
+
+    const form=event.target;
+
+    /*
+      Public/authorized hosts only.
+      Server.js should validate and authorize
+      every submitted host.
+    */
+
+    const payload={
+      host:form.host.value,
+      network:form.network.value,
+      country:form.country.value,
+      status:form.status.value
+    };
+
+    try{
+
+      const response=
+        await fetch("/api/admin/hosts",{
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          credentials:"include",
+          body:JSON.stringify(payload)
+        });
+
+      if(response.ok){
+
+        toast(
+          "PUBLIC HOST ADDED",
+          true
+        );
+
+        form.reset();
+
+      }else{
+
+        toast(
+          "HOST REJECTED"
+        );
+
+      }
+
+    }catch(error){
+
+      toast(
+        "HOST API UNAVAILABLE"
+      );
+
+    }
+
+  });
+
+
+/* =====================================================
+   REPORTS
+===================================================== */
+
+function resolveReport(button){
+
+  if(!confirm(
+    "Mark this report as resolved?"
+  )) return;
+
+  const row=button.closest("tr");
+
+  if(row){
+
+    row.querySelector(".badge").textContent=
+      "RESOLVED";
+
+    row.querySelector(".badge")
+      .className="badge online";
+
+    button.remove();
+
+    toast(
+      "REPORT MARKED RESOLVED",
+      true
+    );
+  }
+
+}
+
+
+/* =====================================================
+   DELETE ITEM
+===================================================== */
+
+function deleteItem(button,type){
+
+  if(!confirm(
+    "Delete this "+type+" from the database?"
+  )) return;
+
+  /*
+    Real deletion MUST be performed by
+    an authenticated Server.js endpoint.
+  */
+
+  const row=button.closest("tr");
+
+  if(row){
+    row.remove();
+  }
+
+  toast(
+    type.toUpperCase()+" REMOVED FROM VIEW"
+  );
+}
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+function toggleSetting(element){
+
+  element.classList.toggle("on");
+
+  const enabled=
+    element.classList.contains("on");
+
+  toast(
+    enabled
+      ? "SETTING ENABLED"
+      : "SETTING DISABLED"
+  );
+
+  /*
+    Connect this to Server.js later:
+
+    POST /api/admin/settings
+  */
+
+}
+
+
+/* =====================================================
+   API HEALTH
+===================================================== */
+
+async function checkAPI(){
+
+  const output=
+    document.getElementById("apiStatus");
+
+  output.textContent=
+    "Checking API...";
+
+  try{
+
+    const started=performance.now();
+
+    const response=
+      await fetch(API.health,{
+        cache:"no-store"
+      });
+
+    const elapsed=
+      Math.round(
+        performance.now()-started
+      );
+
+    if(response.ok){
+
+      output.style.color=
+        "var(--green)";
+
+      output.textContent=
+        "● API ONLINE // "+
+        elapsed+
+        "ms";
+
+      toast(
+        "API HEALTH CHECK PASSED",
+        true
+      );
+
+    }else{
+
+      output.style.color=
+        "#ff5555";
+
+      output.textContent=
+        "● API ERROR // HTTP "+
+        response.status;
+
+    }
+
+  }catch(error){
+
+    output.style.color=
+      "#ff5555";
+
+    output.textContent=
+      "● API OFFLINE";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOGS
+===================================================== */
+
+async function loadLogs(){
+
+  try{
+
+    const response=
+      await fetch(API.logs,{
+        credentials:"include",
+        cache:"no-store"
+      });
+
+    if(!response.ok){
+
+      toast(
+        "LOG API NOT AVAILABLE"
+      );
+
+      return;
+    }
+
+    const data=
+      await response.json();
+
+    const logs=
+      Array.isArray(data)
+        ? data
+        : data.logs || [];
+
+    const table=
+      document.getElementById("logsTable");
+
+    table.innerHTML="";
+
+    logs.slice(0,50).forEach(log=>{
+
+      const row=
+        document.createElement("tr");
+
+      row.innerHTML=`
+        <td>${safe(log.time || "—")}</td>
+        <td>${safe(log.event || "—")}</td>
+        <td>${safe(log.actor || "SYSTEM")}</td>
+        <td>
+          <span class="badge online">
+            ${safe(log.status || "OK")}
+          </span>
+        </td>
+      `;
+
+      table.appendChild(row);
+
+    });
+
+    toast(
+      "ACTIVITY LOGS REFRESHED",
+      true
+    );
+
+  }catch(error){
+
+    toast(
+      "LOG SERVICE UNAVAILABLE"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   BASIC HTML ESCAPING
+===================================================== */
+
+function safe(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =====================================================
+   KEYBOARD SHORTCUT
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.ctrlKey &&
+      event.key.toLowerCase()==="l"
+    ){
+
+      event.preventDefault();
+      logout();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+checkSession();
+
+</script>
+
+</body>
+</html>
