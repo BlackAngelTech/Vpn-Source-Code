@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Savage Tech Support Center">
+
+  <title>SAVAGE TECH // SUPPORT</title>
+
+  <style>
+    :root {
+      --red: #8b0000;
+      --red-bright: #ff2020;
+      --red-dark: #3d0000;
+      --white: #f5f5f5;
+      --muted: #888;
+      --panel: rgba(18, 18, 18, 0.88);
+      --black: #050505;
+      --green: #00ff88;
+      --yellow: #ffd000;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255, 0, 0, .13), transparent 35%),
+        linear-gradient(180deg, #090909, #020202);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .08;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          #fff 4px
+        );
+      z-index: 999;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      background: rgba(3, 3, 3, .88);
+      border-bottom: 1px solid rgba(255, 32, 32, .25);
+    }
+
+    .nav {
+      width: min(1180px, 94%);
+      margin: auto;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--red-bright);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      box-shadow:
+        0 0 15px rgba(255, 0, 0, .18),
+        inset 0 0 15px rgba(255, 0, 0, .08);
+      animation: logoPulse 2.2s infinite;
+    }
+
+    .logo svg {
+      width: 29px;
+      fill: none;
+      stroke: var(--red-bright);
+      stroke-width: 2;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #aaa;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--green);
+      animation: blink 1.4s infinite;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      width: min(1180px, 94%);
+      margin: auto;
+      padding: 45px 0 70px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      color: var(--red-bright);
+      font-size: 11px;
+      letter-spacing: 4px;
+      margin-bottom: 13px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 7vw, 65px);
+      letter-spacing: 5px;
+      text-shadow: 0 0 25px rgba(255, 0, 0, .25);
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 15px auto 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .hero-line {
+      width: 110px;
+      height: 2px;
+      margin: 23px auto 0;
+      background: var(--red-bright);
+      box-shadow: 0 0 15px var(--red-bright);
+    }
+
+    /* =========================
+       SUPPORT GRID
+    ========================= */
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 16px;
+      padding: 24px;
+      transition: .3s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 1px;
+      background: var(--red-bright);
+      box-shadow: 0 0 15px var(--red-bright);
+      transition: .5s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 32, 32, .4);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, .4);
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 32, 32, .35);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+      background: rgba(255, 0, 0, .05);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 9px;
+      letter-spacing: 1px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 9px;
+      border: 1px solid var(--red-bright);
+      background: rgba(255, 0, 0, .08);
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .action:hover {
+      background: var(--red-bright);
+      color: #000;
+      box-shadow: 0 0 20px rgba(255, 32, 32, .35);
+    }
+
+    .action.whatsapp {
+      border-color: #19d66b;
+      background: rgba(0, 255, 130, .06);
+    }
+
+    .action.whatsapp:hover {
+      background: #19d66b;
+    }
+
+    /* =========================
+       CONTACT PANEL
+    ========================= */
+
+    .contact-panel {
+      margin-top: 20px;
+      padding: 24px;
+      border: 1px solid rgba(255, 32, 32, .25);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 0, 0, .07),
+          rgba(0, 0, 0, .25)
+        );
+    }
+
+    .contact-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .contact-title h2 {
+      font-size: 16px;
+      letter-spacing: 2px;
+    }
+
+    .online {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--green);
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .contact-box {
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px;
+      background: rgba(0,0,0,.25);
+    }
+
+    .contact-box small {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      margin-bottom: 7px;
+    }
+
+    .contact-box strong {
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    /* =========================
+       REPORT FORM
+    ========================= */
+
+    .report {
+      margin-top: 20px;
+    }
+
+    .section-title {
+      margin-bottom: 15px;
+      font-size: 19px;
+      letter-spacing: 2px;
+    }
+
+    .section-title span {
+      color: var(--red-bright);
+    }
+
+    .form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      background: rgba(10,10,10,.9);
+      color: white;
+      border-radius: 10px;
+      padding: 14px;
+      transition: .25s;
+    }
+
+    .input:focus,
+    textarea:focus {
+      border-color: var(--red-bright);
+      box-shadow: 0 0 15px rgba(255,0,0,.1);
+    }
+
+    textarea {
+      min-height: 125px;
+      resize: vertical;
+    }
+
+    .submit {
+      width: 100%;
+      border: 1px solid var(--red-bright);
+      background: var(--red-dark);
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 2px;
+      transition: .25s;
+    }
+
+    .submit:hover {
+      background: var(--red-bright);
+      color: black;
+      box-shadow: 0 0 25px rgba(255,0,0,.25);
+    }
+
+    /* =========================
+       FAQ
+    ========================= */
+
+    .faq {
+      margin-top: 35px;
+    }
+
+    details {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 11px;
+      margin-bottom: 9px;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 17px;
+      font-size: 13px;
+      font-weight: bold;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: right;
+      color: var(--red-bright);
+      font-size: 18px;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      color: var(--muted);
+      padding: 0 17px 17px;
+      line-height: 1.7;
+      font-size: 12px;
+    }
+
+    /* =========================
+       QUICK NAV
+    ========================= */
+
+    .quick-nav {
+      margin-top: 35px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .quick {
+      text-align: center;
+      padding: 15px 10px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      color: #bbb;
+      font-size: 10px;
+      letter-spacing: 1px;
+      transition: .25s;
+    }
+
+    .quick:hover {
+      color: white;
+      border-color: var(--red-bright);
+      background: rgba(255,0,0,.06);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding: 25px 5%;
+      text-align: center;
+      color: #666;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    footer strong {
+      color: var(--red-bright);
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translate(-50%, 120px);
+      opacity: 0;
+      z-index: 2000;
+      width: min(90%, 420px);
+      padding: 14px 17px;
+      border: 1px solid var(--red-bright);
+      border-radius: 10px;
+      background: rgba(10,10,10,.96);
+      box-shadow: 0 0 30px rgba(255,0,0,.2);
+      text-align: center;
+      font-size: 12px;
+      transition: .35s;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    @keyframes blink {
+      50% {
+        opacity: .3;
+      }
+    }
+
+    @keyframes logoPulse {
+      50% {
+        box-shadow:
+          0 0 25px rgba(255, 0, 0, .3),
+          inset 0 0 18px rgba(255, 0, 0, .1);
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+      .support-grid,
+      .contact-row {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-nav {
+        grid-template-columns: 1fr;
+      }
+
+      .status {
+        display: none;
+      }
+
+      main {
+        padding-top: 32px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+
+    <a href="Main.html" class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 12
+                   C35 20 30 38 35 52
+                   C38 62 30 70 20 73
+                   M50 12
+                   C65 20 70 38 65 52
+                   C62 62 70 70 80 73
+                   M39 42 L20 35
+                   M61 42 L80 35
+                   M38 55 L17 55
+                   M62 55 L83 55
+                   M43 67 L27 79
+                   M57 67 L73 79
+                   M50 12 L50 88"/>
+        </svg>
+      </div>
+
+      <div class="brand-text">
+        <strong>SAVAGE TECH</strong>
+        <span>SCORPION FILE DATABASE</span>
+      </div>
+    </a>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      SUPPORT ONLINE
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="eyebrow">SCORPION SUPPORT PROTOCOL</div>
+
+    <h1>SUPPORT CENTER</h1>
+
+    <p>
+      Need assistance with a file, download, account, or Savage Tech service?
+      Use one of the support channels below.
+    </p>
+
+    <div class="hero-line"></div>
+  </section>
+
+
+  <!-- SUPPORT OPTIONS -->
+
+  <section class="support-grid">
+
+    <article class="card">
+
+      <div class="card-icon">💬</div>
+
+      <h2>WHATSAPP GROUP</h2>
+
+      <p>
+        Join the official Savage Tech support community for announcements,
+        assistance, file discussions and important updates.
+      </p>
+
+      <a
+        class="action whatsapp"
+        href="https://chat.whatsapp.com/JYMTfZdxK0I2cHifou6EAp?s=cl&p=a&mlu=0&ilr=4"
+        target="_blank"
+        rel="noopener"
+      >
+        JOIN SUPPORT GROUP →
+      </a>
+
+    </article>
+
+
+    <article class="card">
+
+      <div class="card-icon">📢</div>
+
+      <h2>UPDATES CHANNEL</h2>
+
+      <p>
+        Check the latest Savage Tech announcements, newly uploaded files,
+        maintenance notices and system updates.
+      </p>
+
+      <a class="action" href="updates.html">
+        ENTER UPDATES →
+      </a>
+
+    </article>
+
+
+    <article class="card">
+
+      <div class="card-icon">⚠️</div>
+
+      <h2>REPORT A PROBLEM</h2>
+
+      <p>
+        Found a broken, expired, incorrectly labelled or unavailable file?
+        Submit a report and the administration team can investigate it.
+      </p>
+
+      <button
+        class="action"
+        onclick="scrollToReport()"
+      >
+        REPORT FILE →
+      </button>
+
+    </article>
+
+
+    <article class="card">
+
+      <div class="card-icon">🔎</div>
+
+      <h2>FILE SEARCH</h2>
+
+      <p>
+        Can't find the configuration you're looking for? Search the Savage
+        Tech database by country, network, file type or name.
+      </p>
+
+      <a class="action" href="Search.html">
+        OPEN SEARCH →
+      </a>
+
+    </article>
+
+  </section>
+
+
+  <!-- CONTACT -->
+
+  <section class="contact-panel">
+
+    <div class="contact-title">
+      <h2>DIRECT SUPPORT</h2>
+      <span class="online">● AVAILABLE</span>
+    </div>
+
+    <div class="contact-row">
+
+      <div class="contact-box">
+        <small>WHATSAPP SUPPORT</small>
+        <strong>+44 7429 012909</strong>
+      </div>
+
+      <div class="contact-box">
+        <small>RESPONSE CHANNEL</small>
+        <strong>Official WhatsApp Support</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- REPORT -->
+
+  <section class="report" id="report">
+
+    <h2 class="section-title">
+      REPORT <span>AN ISSUE</span>
+    </h2>
+
+    <div class="card">
+
+      <form class="form" id="reportForm">
+
+        <input
+          class="input"
+          id="fileName"
+          type="text"
+          placeholder="File name (optional)"
+          maxlength="120"
+        >
+
+        <input
+          class="input"
+          id="issueType"
+          type="text"
+          placeholder="Issue type e.g. broken download"
+          maxlength="100"
+          required
+        >
+
+        <textarea
+          id="description"
+          placeholder="Describe the problem..."
+          maxlength="1000"
+          required
+        ></textarea>
+
+        <button class="submit" type="submit">
+          SUBMIT REPORT
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- FAQ -->
+
+  <section class="faq">
+
+    <h2 class="section-title">
+      FREQUENTLY ASKED <span>QUESTIONS</span>
+    </h2>
+
+    <details>
+      <summary>Why is a file no longer available?</summary>
+      <p>
+        Files may be removed or replaced when they expire, become outdated,
+        or are reported as unavailable. Check the Updates section for
+        announcements.
+      </p>
+    </details>
+
+    <details>
+      <summary>Where can I find newly uploaded files?</summary>
+      <p>
+        New uploads appear in the Recently Uploaded section on the main
+        dashboard. You can also monitor the Updates channel.
+      </p>
+    </details>
+
+    <details>
+      <summary>My download isn't working. What should I do?</summary>
+      <p>
+        First try the download again. If the problem continues, report the
+        file using the issue form above and include the file name.
+      </p>
+    </details>
+
+    <details>
+      <summary>How do I receive Savage Tech announcements?</summary>
+      <p>
+        Open the Updates Channel from the Support Center or Main dashboard
+        and check for the latest announcements.
+      </p>
+    </details>
+
+    <details>
+      <summary>How can I contact the administration team?</summary>
+      <p>
+        Use the official WhatsApp support group or the direct support
+        contact shown above.
+      </p>
+    </details>
+
+  </section>
+
+
+  <!-- QUICK NAV -->
+
+  <section class="quick-nav">
+
+    <a class="quick" href="Main.html">
+      ← MAIN DATABASE
+    </a>
+
+    <a class="quick" href="Search.html">
+      🔎 SEARCH FILES
+    </a>
+
+    <a class="quick" href="updates.html">
+      📢 LATEST UPDATES
+    </a>
+
+  </section>
+
+</main>
+
+
+<footer>
+  <strong>SAVAGE TECH</strong>
+  // SCORPION PROTOCOL
+  <br><br>
+  Secure file database interface • All systems operational
+</footer>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+  const API_BASE = "";
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3500);
+  }
+
+
+  function scrollToReport() {
+    document.getElementById("report").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+
+  document
+    .getElementById("reportForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const button = this.querySelector(".submit");
+
+      const payload = {
+        fileName: document.getElementById("fileName").value.trim(),
+        issueType: document.getElementById("issueType").value.trim(),
+        description: document.getElementById("description").value.trim()
+      };
+
+      if (!payload.issueType || !payload.description) {
+        showToast("PLEASE COMPLETE THE REQUIRED FIELDS");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "TRANSMITTING REPORT...";
+
+      try {
+
+        const response = await fetch(
+          `${API_BASE}/api/reports`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
+
+        this.reset();
+
+        showToast(
+          "✓ REPORT RECEIVED // ADMINISTRATION NOTIFIED"
+        );
+
+      } catch (error) {
+
+        /*
+          If Server.js is not connected yet, don't pretend
+          the report was successfully stored.
+        */
+
+        showToast(
+          "SERVER UNAVAILABLE // PLEASE USE WHATSAPP SUPPORT"
+        );
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent = "SUBMIT REPORT";
+
+      }
+
+    });
+
+
+  /*
+    Basic connection indicator.
+    The actual support availability should eventually
+    come from Server.js rather than being trusted client-side.
+  */
+
+  async function checkServer() {
+
+    try {
+
+      const response = await fetch(
+        `${API_BASE}/api/health`,
+        {
+          cache: "no-store"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      document.querySelector(".online").textContent =
+        "● SYSTEM AVAILABLE";
+
+    } catch {
+
+      document.querySelector(".online").textContent =
+        "● EXTERNAL SUPPORT AVAILABLE";
+
+    }
+
+  }
+
+  checkServer();
+
+</script>
+
+</body>
+</html>
