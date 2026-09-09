@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Savage Tech Updates Channel">
+
+  <title>SAVAGE TECH // UPDATES</title>
+
+  <style>
+    :root {
+      --red: #8b0000;
+      --red-bright: #ff2020;
+      --red-dark: #3d0000;
+      --white: #f5f5f5;
+      --muted: #888;
+      --panel: rgba(17,17,17,.88);
+      --black: #030303;
+      --green: #00ff88;
+      --yellow: #ffd000;
+      --blue: #38a8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--white);
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(255,0,0,.16),
+          transparent 38%
+        ),
+        linear-gradient(
+          180deg,
+          #090909 0%,
+          #020202 100%
+        );
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: .055;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          #fff 4px
+        );
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          90deg,
+          transparent 49.8%,
+          rgba(255,0,0,.025) 50%,
+          transparent 50.2%
+        );
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,32,32,.24);
+      background: rgba(3,3,3,.88);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      width: min(1180px,94%);
+      min-height: 74px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid var(--red-bright);
+      border-radius: 11px;
+
+      background: rgba(255,0,0,.04);
+
+      box-shadow:
+        0 0 17px rgba(255,0,0,.18),
+        inset 0 0 16px rgba(255,0,0,.07);
+
+      animation: logoPulse 2.3s infinite;
+    }
+
+    .logo svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: var(--red-bright);
+      stroke-width: 2;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1.8px;
+      margin-top: 3px;
+    }
+
+    .live {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      color: #aaa;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: blink 1.3s infinite;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      width: min(1050px,94%);
+      margin: auto;
+      padding: 44px 0 70px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .eyebrow {
+      color: var(--red-bright);
+      font-size: 10px;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(34px,7vw,64px);
+      letter-spacing: 5px;
+      text-shadow:
+        0 0 25px rgba(255,0,0,.23);
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 15px auto 0;
+
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .hero-line {
+      width: 110px;
+      height: 2px;
+      margin: 22px auto;
+
+      background: var(--red-bright);
+      box-shadow: 0 0 18px var(--red-bright);
+    }
+
+    /* =========================
+       CHANNEL BAR
+    ========================= */
+
+    .channel-bar {
+      position: relative;
+      overflow: hidden;
+
+      padding: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+
+      border: 1px solid rgba(255,32,32,.28);
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          110deg,
+          rgba(255,0,0,.09),
+          rgba(255,255,255,.015),
+          rgba(0,0,0,.3)
+        );
+
+      margin-bottom: 24px;
+    }
+
+    .channel-bar::before {
+      content: "";
+
+      position: absolute;
+      top: 0;
+      left: -100%;
+
+      width: 55%;
+      height: 1px;
+
+      background: var(--red-bright);
+      box-shadow: 0 0 18px var(--red-bright);
+
+      animation: scanLine 4s linear infinite;
+    }
+
+    .channel-info {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .channel-icon {
+      width: 45px;
+      height: 45px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid rgba(255,32,32,.35);
+      border-radius: 10px;
+
+      background: rgba(255,0,0,.06);
+
+      font-size: 20px;
+    }
+
+    .channel-info strong {
+      display: block;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .channel-info small {
+      display: block;
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    .channel-status {
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       FILTERS
+    ========================= */
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .filter {
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.025);
+      color: #aaa;
+
+      border-radius: 8px;
+      padding: 9px 13px;
+
+      font-size: 9px;
+      letter-spacing: 1px;
+
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .filter:hover,
+    .filter.active {
+      color: white;
+      border-color: var(--red-bright);
+      background: rgba(255,0,0,.09);
+      box-shadow: 0 0 13px rgba(255,0,0,.1);
+    }
+
+    /* =========================
+       PINNED
+    ========================= */
+
+    .pinned {
+      position: relative;
+      overflow: hidden;
+
+      margin-bottom: 25px;
+      padding: 23px;
+
+      border: 1px solid rgba(255,208,0,.25);
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,208,0,.055),
+          rgba(0,0,0,.35)
+        );
+    }
+
+    .pinned::after {
+      content: "PINNED";
+
+      position: absolute;
+      right: 18px;
+      top: 17px;
+
+      color: var(--yellow);
+      font-size: 8px;
+      letter-spacing: 2px;
+    }
+
+    .pinned-label {
+      color: var(--yellow);
+      font-size: 9px;
+      letter-spacing: 2px;
+      margin-bottom: 11px;
+    }
+
+    .pinned h2 {
+      font-size: 19px;
+      margin-bottom: 9px;
+    }
+
+    .pinned p {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 30px 0 14px;
+    }
+
+    .section-heading h2 {
+      font-size: 17px;
+      letter-spacing: 2px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       UPDATE FEED
+    ========================= */
+
+    .feed {
+      display: grid;
+      gap: 12px;
+    }
+
+    .update {
+      position: relative;
+      overflow: hidden;
+
+      padding: 21px;
+
+      border: 1px solid rgba(255,255,255,.075);
+      border-radius: 14px;
+
+      background: var(--panel);
+
+      transition: .3s ease;
+    }
+
+    .update:hover {
+      transform: translateY(-2px);
+
+      border-color: rgba(255,32,32,.35);
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.35);
+    }
+
+    .update::before {
+      content: "";
+
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 2px;
+
+      background: var(--red-bright);
+      box-shadow: 0 0 13px rgba(255,0,0,.4);
+    }
+
+    .update.new::before {
+      animation: sidePulse 1.5s infinite;
+    }
+
+    .update-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .update-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .update h3 {
+      font-size: 15px;
+      letter-spacing: .5px;
+    }
+
+    .badge {
+      padding: 4px 7px;
+      border-radius: 5px;
+
+      font-size: 7px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .badge.new {
+      color: white;
+      background: var(--red);
+      border: 1px solid var(--red-bright);
+    }
+
+    .badge.system {
+      color: var(--blue);
+      background: rgba(56,168,255,.07);
+      border: 1px solid rgba(56,168,255,.3);
+    }
+
+    .badge.file {
+      color: var(--green);
+      background: rgba(0,255,136,.06);
+      border: 1px solid rgba(0,255,136,.25);
+    }
+
+    .badge.maintenance {
+      color: var(--yellow);
+      background: rgba(255,208,0,.06);
+      border: 1px solid rgba(255,208,0,.25);
+    }
+
+    .update-date {
+      color: #666;
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    .update-body {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 1.75;
+      margin-top: 11px;
+    }
+
+    .update-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 15px;
+
+      color: #666;
+      font-size: 8px;
+      letter-spacing: 1px;
+    }
+
+    .update-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty {
+      display: none;
+
+      text-align: center;
+      padding: 45px 20px;
+
+      border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 14px;
+
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       LOAD MORE
+    ========================= */
+
+    .load-more {
+      width: 100%;
+
+      margin-top: 18px;
+
+      padding: 13px;
+
+      border: 1px solid rgba(255,32,32,.3);
+      border-radius: 9px;
+
+      background: rgba(255,0,0,.04);
+      color: #bbb;
+
+      font-size: 9px;
+      letter-spacing: 2px;
+
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .load-more:hover {
+      color: white;
+      border-color: var(--red-bright);
+      background: rgba(255,0,0,.1);
+    }
+
+    /* =========================
+       NAV
+    ========================= */
+
+    .quick-nav {
+      margin-top: 35px;
+
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+    }
+
+    .quick {
+      padding: 15px 10px;
+
+      text-align: center;
+
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+
+      color: #aaa;
+
+      font-size: 9px;
+      letter-spacing: 1px;
+
+      transition: .25s;
+    }
+
+    .quick:hover {
+      color: white;
+      border-color: var(--red-bright);
+      background: rgba(255,0,0,.06);
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+
+      z-index: 2000;
+
+      width: min(90%,420px);
+
+      padding: 14px 17px;
+
+      text-align: center;
+
+      border: 1px solid var(--red-bright);
+      border-radius: 10px;
+
+      background: rgba(7,7,7,.97);
+
+      box-shadow:
+        0 0 30px rgba(255,0,0,.18);
+
+      font-size: 11px;
+
+      opacity: 0;
+      transform: translate(-50%,120px);
+
+      transition: .35s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%,0);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 25px 5%;
+
+      text-align: center;
+
+      color: #555;
+
+      border-top: 1px solid rgba(255,255,255,.06);
+
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    footer strong {
+      color: var(--red-bright);
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    @keyframes blink {
+      50% {
+        opacity: .25;
+      }
+    }
+
+    @keyframes logoPulse {
+      50% {
+        box-shadow:
+          0 0 27px rgba(255,0,0,.28),
+          inset 0 0 18px rgba(255,0,0,.1);
+      }
+    }
+
+    @keyframes scanLine {
+      0% {
+        left: -60%;
+      }
+
+      100% {
+        left: 120%;
+      }
+    }
+
+    @keyframes sidePulse {
+      50% {
+        box-shadow: 0 0 20px var(--red-bright);
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width:700px) {
+
+      main {
+        padding-top: 32px;
+      }
+
+      .live {
+        display: none;
+      }
+
+      .channel-bar {
+        align-items: flex-start;
+      }
+
+      .channel-status {
+        display: none;
+      }
+
+      .update-head {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .update-date {
+        order: -1;
+      }
+
+      .quick-nav {
+        grid-template-columns: 1fr;
+      }
+
+      .pinned {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="nav">
+
+    <a href="Main.html" class="brand">
+
+      <div class="logo">
+
+        <svg viewBox="0 0 100 100">
+
+          <path
+            d="
+              M50 12
+              C35 20 30 38 35 52
+              C38 62 30 70 20 73
+              M50 12
+              C65 20 70 38 65 52
+              C62 62 70 70 80 73
+              M39 42 L20 35
+              M61 42 L80 35
+              M38 55 L17 55
+              M62 55 L83 55
+              M43 67 L27 79
+              M57 67 L73 79
+              M50 12 L50 88
+            "
+          />
+
+        </svg>
+
+      </div>
+
+      <div>
+
+        <strong>SAVAGE TECH</strong>
+
+        <span>SCORPION FILE DATABASE</span>
+
+      </div>
+
+    </a>
+
+    <div class="live">
+
+      <span class="live-dot"></span>
+
+      CHANNEL ONLINE
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      SCORPION COMMUNICATION NETWORK
+    </div>
+
+    <h1>UPDATES</h1>
+
+    <p>
+      Welcome to the official Savage Tech updates channel.
+      Stay informed about new files, system changes, maintenance,
+      announcements and important database notices.
+    </p>
+
+    <div class="hero-line"></div>
+
+  </section>
+
+
+  <!-- CHANNEL STATUS -->
+
+  <section class="channel-bar">
+
+    <div class="channel-info">
+
+      <div class="channel-icon">
+        📢
+      </div>
+
+      <div>
+
+        <strong>SAVAGE TECH // OFFICIAL CHANNEL</strong>
+
+        <small>
+          ADMINISTRATOR BROADCAST NETWORK
+        </small>
+
+      </div>
+
+    </div>
+
+    <div class="channel-status">
+      ● LIVE
+    </div>
+
+  </section>
+
+
+  <!-- FILTERS -->
+
+  <div class="filters">
+
+    <button
+      class="filter active"
+      data-filter="all"
+    >
+      ALL
+    </button>
+
+    <button
+      class="filter"
+      data-filter="file"
+    >
+      FILES
+    </button>
+
+    <button
+      class="filter"
+      data-filter="system"
+    >
+      SYSTEM
+    </button>
+
+    <button
+      class="filter"
+      data-filter="maintenance"
+    >
+      MAINTENANCE
+    </button>
+
+  </div>
+
+
+  <!-- PINNED -->
+
+  <section class="pinned">
+
+    <div class="pinned-label">
+      ⚡ ADMINISTRATOR NOTICE
+    </div>
+
+    <h2>
+      Welcome to Savage Tech
+    </h2>
+
+    <p>
+      This is the official updates channel. Important announcements,
+      new database releases, maintenance information and file updates
+      will appear here. Check this page regularly so you don't miss
+      important changes.
+    </p>
+
+  </section>
+
+
+  <!-- FEED -->
+
+  <div class="section-heading">
+
+    <h2>LATEST TRANSMISSIONS</h2>
+
+    <span id="updateCount">
+      LOADING...
+    </span>
+
+  </div>
+
+
+  <section class="feed" id="feed">
+
+    <!-- Demo content appears immediately -->
+
+    <article
+      class="update new"
+      data-category="file"
+    >
+
+      <div class="update-head">
+
+        <div class="update-title">
+
+          <h3>
+            New Files Added
+          </h3>
+
+          <span class="badge new">
+            NEW
+          </span>
+
+          <span class="badge file">
+            FILE
+          </span>
+
+        </div>
+
+        <span class="update-date">
+          SYSTEM DEMO
+        </span>
+
+      </div>
+
+      <p class="update-body">
+        New configuration files have been added to the Savage Tech
+        database. Visit the main database and check the Recently
+        Uploaded section for the latest releases.
+      </p>
+
+      <div class="update-meta">
+
+        <span>📁 DATABASE</span>
+        <span>● PUBLISHED</span>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="update"
+      data-category="system"
+    >
+
+      <div class="update-head">
+
+        <div class="update-title">
+
+          <h3>
+            Database Online
+          </h3>
+
+          <span class="badge system">
+            SYSTEM
+          </span>
+
+        </div>
+
+        <span class="update-date">
+          SYSTEM DEMO
+        </span>
+
+      </div>
+
+      <p class="update-body">
+        Savage Tech file database services are operational.
+        Search, file information and supported download endpoints
+        are available.
+      </p>
+
+      <div class="update-meta">
+
+        <span>⚙ CORE</span>
+        <span>● OPERATIONAL</span>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="update"
+      data-category="maintenance"
+    >
+
+      <div class="update-head">
+
+        <div class="update-title">
+
+          <h3>
+            Maintenance Protocol
+          </h3>
+
+          <span class="badge maintenance">
+            NOTICE
+          </span>
+
+        </div>
+
+        <span class="update-date">
+          SYSTEM DEMO
+        </span>
+
+      </div>
+
+      <p class="update-body">
+        Scheduled maintenance notices will be published here by
+        administration. During maintenance, some services may
+        temporarily become unavailable.
+      </p>
+
+      <div class="update-meta">
+
+        <span>🛠 MAINTENANCE</span>
+        <span>● MONITORED</span>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <div class="empty" id="empty">
+    NO TRANSMISSIONS FOUND FOR THIS CATEGORY.
+  </div>
+
+
+  <button
+    class="load-more"
+    id="loadMore"
+  >
+    LOAD MORE TRANSMISSIONS
+  </button>
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="quick-nav">
+
+    <a
+      class="quick"
+      href="Main.html"
+    >
+      ← MAIN DATABASE
+    </a>
+
+    <a
+      class="quick"
+      href="Search.html"
+    >
+      🔎 SEARCH FILES
+    </a>
+
+    <a
+      class="quick"
+      href="Support.html"
+    >
+      🛠 SUPPORT CENTER
+    </a>
+
+  </nav>
+
+</main>
+
+
+<footer>
+
+  <strong>SAVAGE TECH</strong>
+  // SCORPION PROTOCOL
+
+  <br><br>
+
+  OFFICIAL INFORMATION CHANNEL
+
+</footer>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+
+  const API_BASE = "";
+
+  const feed = document.getElementById("feed");
+  const empty = document.getElementById("empty");
+  const count = document.getElementById("updateCount");
+  const loadMore = document.getElementById("loadMore");
+
+  let updates = [];
+  let currentFilter = "all";
+
+
+  /*
+   * ==========================================
+   * DEMO UPDATES
+   * ==========================================
+   *
+   * These are only used when Server.js isn't
+   * connected yet.
+   */
+
+  const demoUpdates = [
+
+    {
+      id: "demo-1",
+      title: "New Files Added",
+      message:
+        "New configuration files have been added to the Savage Tech database. Visit the main database and check the Recently Uploaded section for the latest releases.",
+      category: "file",
+      date: "Just now",
+      author: "Savage Tech Admin",
+      pinned: false,
+      isNew: true
+    },
+
+    {
+      id: "demo-2",
+      title: "Database Online",
+      message:
+        "Savage Tech file database services are operational. Search, file information and supported download endpoints are available.",
+      category: "system",
+      date: "Today",
+      author: "System",
+      pinned: false,
+      isNew: false
+    },
+
+    {
+      id: "demo-3",
+      title: "Maintenance Protocol",
+      message:
+        "Scheduled maintenance notices will be published here by administration. During maintenance, some services may temporarily become unavailable.",
+      category: "maintenance",
+      date: "Today",
+      author: "Savage Tech Admin",
+      pinned: false,
+      isNew: false
+    }
+
+  ];
+
+
+  /*
+   * ==========================================
+   * TOAST
+   * ==========================================
+   */
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    }, 3200);
+
+  }
+
+
+  /*
+   * ==========================================
+   * CATEGORY LABEL
+   * ==========================================
+   */
+
+  function getBadge(category) {
+
+    const labels = {
+
+      file: {
+        text: "FILE",
+        className: "file"
+      },
+
+      system: {
+        text: "SYSTEM",
+        className: "system"
+      },
+
+      maintenance: {
+        text: "NOTICE",
+        className: "maintenance"
+      }
+
+    };
+
+    return labels[category] || {
+      text: "UPDATE",
+      className: "system"
+    };
+
+  }
+
+
+  /*
+   * ==========================================
+   * RENDER
+   * ==========================================
+   */
+
+  function renderUpdates() {
+
+    const filtered =
+      currentFilter === "all"
+        ? updates
+        : updates.filter(
+            update =>
+              update.category === currentFilter
+          );
+
+    feed.innerHTML = "";
+
+    count.textContent =
+      `${filtered.length} TRANSMISSION${filtered.length === 1 ? "" : "S"}`;
+
+
+    if (!filtered.length) {
+
+      empty.style.display = "block";
+
+      loadMore.style.display = "none";
+
+      return;
+
+    }
+
+
+    empty.style.display = "none";
+
+    loadMore.style.display = "block";
+
+
+    filtered.forEach(update => {
+
+      const badge =
+        getBadge(update.category);
+
+      const article =
+        document.createElement("article");
+
+      article.className =
+        `update ${update.isNew ? "new" : ""}`;
+
+      article.dataset.category =
+        update.category || "system";
+
+
+      article.innerHTML = `
+
+        <div class="update-head">
+
+          <div class="update-title">
+
+            <h3></h3>
+
+            ${
+              update.isNew
+                ? `<span class="badge new">NEW</span>`
+                : ""
+            }
+
+            <span class="badge ${badge.className}">
+              ${badge.text}
+            </span>
+
+          </div>
+
+          <span class="update-date">
+            ${escapeHTML(update.date || "RECENT")}
+          </span>
+
+        </div>
+
+        <p class="update-body"></p>
+
+        <div class="update-meta">
+
+          <span>
+            📡 ${escapeHTML(update.author || "ADMIN")}
+          </span>
+
+          <span>
+            ● PUBLISHED
+          </span>
+
+        </div>
+
+      `;
+
+
+      article
+        .querySelector("h3")
+        .textContent =
+        update.title || "Untitled Update";
+
+
+      article
+        .querySelector(".update-body")
+        .textContent =
+        update.message || "";
+
+
+      feed.appendChild(article);
+
+    });
+
+  }
+
+
+  /*
+   * ==========================================
+   * ESCAPE HTML
+   * ==========================================
+   */
+
+  function escapeHTML(value) {
+
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  /*
+   * ==========================================
+   * FILTERS
+   * ==========================================
+   */
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          document
+            .querySelectorAll(".filter")
+            .forEach(
+              btn =>
+                btn.classList.remove("active")
+            );
+
+          button.classList.add("active");
+
+          currentFilter =
+            button.dataset.filter;
+
+          renderUpdates();
+
+        }
+      );
+
+    });
+
+
+  /*
+   * ==========================================
+   * LOAD FROM SERVER
+   * ==========================================
+   *
+   * Expected endpoint:
+   *
+   * GET /api/updates
+   *
+   * Example response:
+   *
+   * {
+   *   "updates": [...]
+   * }
+   */
+
+  async function loadUpdates() {
+
+    try {
+
+      const response =
+        await fetch(
+          `${API_BASE}/api/updates`,
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        Array.isArray(data)
+      ) {
+
+        updates = data;
+
+      } else if (
+        Array.isArray(data.updates)
+      ) {
+
+        updates = data.updates;
+
+      } else {
+
+        throw new Error(
+          "Invalid update format"
+        );
+
+      }
+
+
+      /*
+       * Server is connected.
+       */
+
+      showToast(
+        "✓ UPDATE CHANNEL SYNCHRONIZED"
+      );
+
+
+    } catch (error) {
+
+      /*
+       * Backend isn't available yet.
+       * Use local demo data.
+       */
+
+      updates =
+        demoUpdates;
+
+    }
+
+
+    renderUpdates();
+
+  }
+
+
+  /*
+   * ==========================================
+   * LOAD MORE
+   * ==========================================
+   */
+
+  loadMore.addEventListener(
+    "click",
+    () => {
+
+      showToast(
+        "MORE TRANSMISSIONS WILL LOAD FROM SERVER"
+      );
+
+    }
+  );
+
+
+  /*
+   * ==========================================
+   * INITIALIZE
+   * ==========================================
+   */
+
+  loadUpdates();
+
+
+  /*
+   * ==========================================
+   * AUTO REFRESH
+   * ==========================================
+   *
+   * Checks for new administrator updates
+   * every 60 seconds.
+   */
+
+  setInterval(
+    loadUpdates,
+    60000
+  );
+
+</script>
+
+</body>
+</html>
