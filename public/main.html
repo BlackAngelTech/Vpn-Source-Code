@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Savage Tech — Premium VPN File Database">
+  <title>Savage Tech — VPN File Database</title>
+
+  <style>
+    :root {
+      --red: #8b0000;
+      --red-bright: #ff1a1a;
+      --red-soft: #ff4545;
+      --dark: #030303;
+      --panel: rgba(14, 14, 14, .88);
+      --panel-2: rgba(24, 24, 24, .92);
+      --border: rgba(255, 30, 30, .28);
+      --text: #f5f5f5;
+      --muted: #8d8d8d;
+      --green: #42ff8a;
+      --yellow: #ffd34d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(150, 0, 0, .28), transparent 38%),
+        linear-gradient(180deg, #090909 0%, #030303 100%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: .12;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(255, 255, 255, .025) 4px
+      );
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 28px));
+      margin: auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(3, 3, 3, .84);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      filter: drop-shadow(0 0 12px rgba(255, 0, 0, .55));
+      animation: emblemPulse 2.8s infinite;
+    }
+
+    @keyframes emblemPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 7px rgba(255, 0, 0, .3));
+      }
+      50% {
+        filter: drop-shadow(0 0 18px rgba(255, 0, 0, .8));
+      }
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .online {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #ddd;
+      font-size: 9px;
+      letter-spacing: 1.4px;
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--green);
+      animation: onlinePulse 1.5s infinite;
+    }
+
+    @keyframes onlinePulse {
+      50% {
+        opacity: .35;
+        transform: scale(.7);
+      }
+    }
+
+    /* =========================
+       HERO VIDEO
+    ========================== */
+
+    .hero {
+      position: relative;
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      box-shadow:
+        0 0 50px rgba(120, 0, 0, .18),
+        inset 0 0 30px rgba(255, 0, 0, .04);
+    }
+
+    .hero video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      min-height: 230px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.82), transparent 65%),
+        linear-gradient(0deg, rgba(0,0,0,.78), transparent 55%);
+    }
+
+    .hero-content {
+      position: absolute;
+      left: 28px;
+      bottom: 25px;
+      z-index: 2;
+      max-width: 560px;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      margin-bottom: 11px;
+      border: 1px solid rgba(255, 40, 40, .4);
+      background: rgba(80, 0, 0, .35);
+      border-radius: 5px;
+      color: #ff7373;
+      font-size: 9px;
+      letter-spacing: 1.8px;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(27px, 6vw, 58px);
+      line-height: .95;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 25px rgba(255, 0, 0, .4);
+    }
+
+    .hero-content p {
+      margin-top: 10px;
+      color: #bbb;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       CONNECTION HUD
+    ========================== */
+
+    .hud {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--panel);
+      box-shadow: inset 0 0 35px rgba(255, 0, 0, .025);
+    }
+
+    .verify {
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .scanner {
+      position: relative;
+      width: 75px;
+      height: 75px;
+      flex: 0 0 75px;
+    }
+
+    .scanner svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .scanner-ring {
+      fill: none;
+      stroke: rgba(255, 40, 40, .18);
+      stroke-width: 3;
+    }
+
+    .scanner-progress {
+      fill: none;
+      stroke: var(--red-bright);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 201;
+      stroke-dashoffset: 50;
+      animation: scanRing 2.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 5px var(--red-bright));
+    }
+
+    @keyframes scanRing {
+      0% {
+        stroke-dashoffset: 201;
+      }
+      70%, 100% {
+        stroke-dashoffset: 25;
+      }
+    }
+
+    .scanner-core {
+      position: absolute;
+      inset: 25px;
+      border-radius: 50%;
+      background: var(--red-bright);
+      box-shadow: 0 0 17px rgba(255, 0, 0, .8);
+      animation: corePulse 1.6s infinite;
+    }
+
+    @keyframes corePulse {
+      50% {
+        transform: scale(.55);
+        opacity: .55;
+      }
+    }
+
+    .verify h3 {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+    }
+
+    .verify-status {
+      margin-top: 6px;
+      color: var(--green);
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .verify-note {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      min-height: 100%;
+    }
+
+    .device-stat {
+      padding: 16px;
+      border-left: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .device-stat:first-child {
+      border-left: 0;
+    }
+
+    .device-stat span {
+      color: var(--muted);
+      font-size: 8px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .device-stat strong {
+      margin-top: 6px;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       SEARCH
+    ========================== */
+
+    .search-panel {
+      margin-top: 18px;
+      padding: 15px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: #777;
+      stroke-width: 2;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid rgba(255,255,255,.1);
+      outline: none;
+      border-radius: 10px;
+      padding: 0 17px 0 47px;
+      color: #fff;
+      background: rgba(0,0,0,.6);
+      transition: .2s;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(255, 35, 35, .6);
+      box-shadow: 0 0 20px rgba(255,0,0,.1);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .filters select {
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 8px;
+      padding: 0 10px;
+      color: #bbb;
+      background: #090909;
+      outline: none;
+    }
+
+    /* =========================
+       SECTION HEADERS
+    ========================== */
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 13px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .section-title .line {
+      width: 4px;
+      height: 24px;
+      border-radius: 5px;
+      background: var(--red-bright);
+      box-shadow: 0 0 12px rgba(255,0,0,.6);
+    }
+
+    .section-title h2 {
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .section-head small {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       STATS
+    ========================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      right: -35px;
+      bottom: -35px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,0,0,.2);
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      font-size: 8px;
+      letter-spacing: 1.5px;
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 25px;
+    }
+
+    .stat-card em {
+      color: var(--red-soft);
+      font-style: normal;
+      font-size: 8px;
+    }
+
+    /* =========================
+       FILE CARDS
+    ========================== */
+
+    .files-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .file-card {
+      position: relative;
+      padding: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 13px;
+      background:
+        linear-gradient(145deg, rgba(30,30,30,.94), rgba(8,8,8,.95));
+      transition: transform .22s, border-color .22s, box-shadow .22s;
+    }
+
+    .file-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 25, 25, .55);
+      box-shadow: 0 15px 35px rgba(0,0,0,.4), 0 0 20px rgba(255,0,0,.08);
+    }
+
+    .file-card::before {
+      content: "";
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 70%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ff2929, transparent);
+      animation: cardScan 4s infinite;
+    }
+
+    @keyframes cardScan {
+      0% {
+        left: -100%;
+      }
+      40%, 100% {
+        left: 130%;
+      }
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .badge {
+      padding: 5px 7px;
+      border-radius: 4px;
+      font-size: 7px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .badge-new {
+      color: #fff;
+      background: rgba(255,0,0,.18);
+      border: 1px solid rgba(255,0,0,.35);
+    }
+
+    .badge-popular {
+      color: var(--yellow);
+      background: rgba(255,200,0,.08);
+      border: 1px solid rgba(255,200,0,.2);
+    }
+
+    .file-icon {
+      width: 49px;
+      height: 49px;
+      margin-top: 14px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,30,30,.28);
+      border-radius: 10px;
+      background: rgba(100,0,0,.13);
+    }
+
+    .file-icon svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: var(--red-soft);
+      stroke-width: 1.7;
+    }
+
+    .file-card h3 {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .country {
+      margin-top: 5px;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 13px;
+    }
+
+    .meta div {
+      padding: 8px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .meta span {
+      display: block;
+      color: #666;
+      font-size: 7px;
+      text-transform: uppercase;
+    }
+
+    .meta strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 9px;
+      color: #ccc;
+    }
+
+    .download-btn {
+      position: relative;
+      width: 100%;
+      height: 43px;
+      margin-top: 13px;
+      overflow: hidden;
+      border: 1px solid rgba(255,40,40,.6);
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(100deg, #650000, #a90000);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      transition: .2s;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(255,0,0,.24);
+      background: linear-gradient(100deg, #870000, #d00000);
+    }
+
+    .download-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -70%;
+      width: 40%;
+      height: 100%;
+      transform: skewX(-20deg);
+      background: rgba(255,255,255,.13);
+      animation: buttonSweep 3.2s infinite;
+    }
+
+    @keyframes buttonSweep {
+      0%, 55% {
+        left: -70%;
+      }
+      100% {
+        left: 150%;
+      }
+    }
+
+    .download-btn.loading {
+      pointer-events: none;
+      opacity: .75;
+    }
+
+    /* =========================
+       COUNTRIES
+    ========================== */
+
+    .countries {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 9px;
+    }
+
+    .country-card {
+      min-height: 82px;
+      padding: 13px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px;
+      background: var(--panel);
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .country-card:hover {
+      border-color: rgba(255,0,0,.4);
+      transform: translateY(-2px);
+    }
+
+    .flag {
+      font-size: 25px;
+    }
+
+    .country-card strong {
+      margin-top: 6px;
+      font-size: 9px;
+    }
+
+    .country-card small {
+      margin-top: 3px;
+      color: #666;
+      font-size: 7px;
+    }
+
+    /* =========================
+       FILE TYPES
+    ========================== */
+
+    .types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .type {
+      padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      color: #aaa;
+      background: rgba(255,255,255,.025);
+      font-family: monospace;
+      font-size: 10px;
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .type:hover {
+      color: #fff;
+      border-color: rgba(255,0,0,.45);
+      background: rgba(100,0,0,.18);
+    }
+
+    /* =========================
+       SUPPORT / ADMIN
+    ========================== */
+
+    .action-panel {
+      margin-top: 34px;
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background:
+        radial-gradient(circle at 100% 0, rgba(120,0,0,.2), transparent 40%),
+        var(--panel);
+    }
+
+    .action-panel h2 {
+      font-size: 17px;
+      letter-spacing: 1px;
+    }
+
+    .action-panel p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 17px;
+    }
+
+    .action {
+      min-height: 42px;
+      padding: 0 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: #0a0a0a;
+      color: #ddd;
+      font-size: 9px;
+      letter-spacing: 1px;
+      transition: .2s;
+    }
+
+    .action:hover {
+      border-color: rgba(255,0,0,.5);
+      color: #fff;
+    }
+
+    .action.whatsapp {
+      border-color: rgba(50,255,130,.25);
+      color: #69ff9e;
+    }
+
+    .action.admin {
+      border-color: rgba(255,35,35,.4);
+      color: #ff6d6d;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================== */
+
+    .empty {
+      display: none;
+      padding: 45px 15px;
+      text-align: center;
+      border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 12px;
+      color: #777;
+    }
+
+    .empty svg {
+      width: 42px;
+      margin-bottom: 12px;
+      stroke: #555;
+      fill: none;
+    }
+
+    .empty strong {
+      display: block;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .empty span {
+      display: block;
+      margin-top: 5px;
+      font-size: 9px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      margin-top: 45px;
+      padding: 25px 0 35px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      text-align: center;
+    }
+
+    footer strong {
+      display: block;
+      color: #ddd;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    footer p {
+      margin-top: 7px;
+      color: #555;
+      font-size: 8px;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 200;
+      min-width: 250px;
+      max-width: calc(100% - 30px);
+      padding: 13px 15px;
+      transform: translate(-50%, 130px);
+      opacity: 0;
+      border: 1px solid rgba(255,30,30,.35);
+      border-radius: 9px;
+      background: rgba(10,10,10,.95);
+      box-shadow: 0 15px 40px rgba(0,0,0,.5);
+      color: #ddd;
+      text-align: center;
+      font-size: 10px;
+      transition: .35s;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 850px) {
+      .hud {
+        grid-template-columns: 1fr;
+      }
+
+      .files-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .countries {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 18px, 1180px);
+      }
+
+      .nav {
+        min-height: 62px;
+      }
+
+      .online {
+        display: none;
+      }
+
+      .hero video {
+        aspect-ratio: 16 / 10;
+        min-height: 240px;
+      }
+
+      .hero-content {
+        left: 17px;
+        bottom: 17px;
+      }
+
+      .hero-content h1 {
+        font-size: 31px;
+      }
+
+      .hero-content p {
+        font-size: 9px;
+      }
+
+      .device-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .device-stat:nth-child(3) {
+        border-left: 0;
+        border-top: 1px solid rgba(255,255,255,.06);
+      }
+
+      .device-stat:nth-child(4) {
+        border-top: 1px solid rgba(255,255,255,.06);
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .files-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .countries {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 370px) {
+      .countries {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header>
+    <div class="container nav">
+
+  <a class="brand" href="Main.html">
+
+    <svg class="brand-icon" viewBox="0 0 100 100" aria-hidden="true">
+      <path
+        d="M18 64 C28 52 39 51 50 58 C61 51 72 52 82 64
+           M29 48 C35 39 43 37 50 42 C57 37 65 39 71 48
+           M40 34 L34 22 M60 34 L66 22
+           M28 58 L15 48 M72 58 L85 48
+           M37 68 L27 82 M63 68 L73 82
+           M50 58 L50 86"
+        fill="none"
+        stroke="#ff1a1a"
+        stroke-width="5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+
+    <div class="brand-text">
+      <strong>SAVAGE TECH</strong>
+      <span>SCORPION FILE DATABASE</span>
+    </div>
+
+  </a>
+
+  <div class="online">
+    <span class="online-dot"></span>
+    DATABASE ONLINE
+  </div>
+
+</div>
+
+  </header>
+
+  <main class="container">
+
+<!-- =========================
+     VIDEO HERO
+========================== -->
+
+<section class="hero">
+
+  <video
+    id="heroVideo"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster="">
+    <source src="https://files.catbox.moe/sf25lo.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <div class="hero-label">
+      <span class="online-dot"></span>
+      PREMIUM FILE DATABASE
+    </div>
+
+    <h1>Strike.<br>Download.<br>Connect.</h1>
+
+    <p>
+      Browse the latest VPN configuration files, tools and network
+      resources from the Savage Tech database.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     CONNECTION HUD
+========================== -->
+
+<section class="hud">
+
+  <div class="panel verify">
+
+    <div class="scanner">
+
+      <svg viewBox="0 0 80 80">
+        <circle
+          class="scanner-ring"
+          cx="40"
+          cy="40"
+          r="32">
+        </circle>
+
+        <circle
+          class="scanner-progress"
+          cx="40"
+          cy="40"
+          r="32">
+        </circle>
+      </svg>
+
+      <div class="scanner-core"></div>
+
+    </div>
+
+    <div>
+      <h3>CONNECTION STATUS</h3>
+      <div class="verify-status" id="verifyStatus">
+        ● CHECKING CONNECTION
+      </div>
+      <div class="verify-note">
+        Basic connection information is detected locally/server-side.
+        Precise GPS is not requested.
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="panel device-grid">
+
+    <div class="device-stat">
+      <span>IP</span>
+      <strong id="userIP">Protected</strong>
+    </div>
+
+    <div class="device-stat">
+      <span>Country</span>
+      <strong id="userCountry">Detecting...</strong>
+    </div>
+
+    <div class="device-stat">
+      <span>Battery</span>
+      <strong id="battery">Unavailable</strong>
+    </div>
+
+    <div class="device-stat">
+      <span>Device</span>
+      <strong id="device">Detecting...</strong>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SEARCH / FILTERS
+========================== -->
+
+<section class="panel search-panel">
+
+  <div class="search-box">
+
+    <svg viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M16.5 16.5L21 21"></path>
+    </svg>
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Search files, countries, networks or extensions..."
+      autocomplete="off">
+
+  </div>
+
+  <div class="filters">
+
+    <select id="countryFilter">
+      <option value="">🌍 All Countries</option>
+      <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+      <option value="South Africa">🇿🇦 South Africa</option>
+      <option value="Nigeria">🇳🇬 Nigeria</option>
+      <option value="Kenya">🇰🇪 Kenya</option>
+      <option value="United Kingdom">🇬🇧 United Kingdom</option>
+      <option value="United States">🇺🇸 United States</option>
+    </select>
+
+    <select id="typeFilter">
+      <option value="">📄 All File Types</option>
+      <option value="ovpn">.OVPN</option>
+      <option value="ehi">.EHI</option>
+      <option value="hat">.HAT</option>
+      <option value="npv">.NPV</option>
+      <option value="nm">.NM</option>
+      <option value="hc">.HC</option>
+    </select>
+
+    <select id="networkFilter">
+      <option value="">📡 All Networks</option>
+      <option value="Econet">Econet</option>
+      <option value="NetOne">NetOne</option>
+      <option value="Telecel">Telecel</option>
+      <option value="MTN">MTN</option>
+      <option value="Vodacom">Vodacom</option>
+    </select>
+
+    <select id="sortFilter">
+      <option value="newest">↕ Newest First</option>
+      <option value="popular">🔥 Most Downloaded</option>
+      <option value="name">A–Z</option>
+    </select>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     DATABASE STATS
+========================== -->
+
+<section class="section">
+
+  <div class="stats">
+
+    <div class="stat-card">
+      <span>Total Files</span>
+      <strong id="totalFiles">0</strong>
+      <em>DATABASE</em>
+    </div>
+
+    <div class="stat-card">
+      <span>Countries</span>
+      <strong id="totalCountries">0</strong>
+      <em>SUPPORTED</em>
+    </div>
+
+    <div class="stat-card">
+      <span>Downloads</span>
+      <strong id="totalDownloads">0</strong>
+      <em>ALL TIME</em>
+    </div>
+
+    <div class="stat-card">
+      <span>Status</span>
+      <strong>ONLINE</strong>
+      <em>LIVE</em>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURED
+========================== -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>🔥 Featured Files</h2>
+    </div>
+
+    <small>HAND PICKED</small>
+
+  </div>
+
+  <div id="featuredFiles" class="files-grid"></div>
+
+</section>
+
+
+<!-- =========================
+     RECENTLY UPLOADED
+========================== -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>🆕 Recently Uploaded</h2>
+    </div>
+
+    <small id="recentStatus">LATEST DATABASE ENTRIES</small>
+
+  </div>
+
+  <div id="recentFiles" class="files-grid"></div>
+
+  <div id="emptyState" class="empty">
+
+    <svg viewBox="0 0 24 24">
+      <path d="M4 4h16v16H4z"></path>
+      <path d="M8 9h8M8 13h6M8 17h4"></path>
+    </svg>
+
+    <strong>No files found</strong>
+    <span>Try another search or filter.</span>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     MOST DOWNLOADED
+========================== -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>📥 Most Downloaded</h2>
+    </div>
+
+    <small>COMMUNITY FAVOURITES</small>
+
+  </div>
+
+  <div id="popularFiles" class="files-grid"></div>
+
+</section>
+
+
+<!-- =========================
+     COUNTRIES
+========================== -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>🌍 Browse Countries</h2>
+    </div>
+
+    <small>SELECT REGION</small>
+
+  </div>
+
+  <div class="countries">
+
+    <div class="country-card" data-country="Zimbabwe">
+      <span class="flag">🇿🇼</span>
+      <strong>Zimbabwe</strong>
+      <small>VPN FILES</small>
+    </div>
+
+    <div class="country-card" data-country="South Africa">
+      <span class="flag">🇿🇦</span>
+      <strong>South Africa</strong>
+      <small>VPN FILES</small>
+    </div>
+
+    <div class="country-card" data-country="Nigeria">
+      <span class="flag">🇳🇬</span>
+      <strong>Nigeria</strong>
+      <small>VPN FILES</small>
+    </div>
+
+    <div class="country-card" data-country="Kenya">
+      <span class="flag">🇰🇪</span>
+      <strong>Kenya</strong>
+      <small>VPN FILES</small>
+    </div>
+
+    <div class="country-card" data-country="United Kingdom">
+      <span class="flag">🇬🇧</span>
+      <strong>United Kingdom</strong>
+      <small>VPN FILES</small>
+    </div>
+
+    <div class="country-card" data-country="United States">
+      <span class="flag">🇺🇸</span>
+      <strong>United States</strong>
+      <small>VPN FILES</small>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FILE TYPES
+========================== -->
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h2>📂 File Types</h2>
+    </div>
+
+    <small>SUPPORTED FORMATS</small>
+
+  </div>
+
+  <div class="types">
+
+    <div class="type" data-type="ovpn">.OVPN</div>
+    <div class="type" data-type="ehi">.EHI</div>
+    <div class="type" data-type="hat">.HAT</div>
+    <div class="type" data-type="npv">.NPV</div>
+    <div class="type" data-type="nm">.NM</div>
+    <div class="type" data-type="hc">.HC</div>
+    <div class="type" data-type="tls">.TLS</div>
+    <div class="type" data-type="conf">.CONF</div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SUPPORT / ADMIN
+========================== -->
+
+<section class="action-panel">
+
+  <h2>🦂 Savage Tech Control Center</h2>
+
+  <p>
+    Need assistance, want to report a broken file, or manage the
+    database? Use the available controls below.
+  </p>
+
+  <div class="actions">
+
+    <a
+      class="action whatsapp"
+      href="https://chat.whatsapp.com/JYMTfZdxK0I2cHifou6EAp?s=cl&p=a&mlu=0&ilr=4"
+      target="_blank"
+      rel="noopener">
+      💬 SUPPORT GROUP
+    </a>
+
+    <a
+      class="action"
+      href="Support.html">
+      🛠️ SUPPORT CENTER
+    </a>
+
+    <a
+      class="action"
+      href="Search.html">
+      🔎 ADVANCED SEARCH
+    </a>
+
+    <a
+      class="action admin"
+      href="admin.html">
+      🔐 ADMIN PANEL
+    </a>
+
+  </div>
+
+</section>
+
+  </main>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+<strong>🦂 SAVAGE TECH</strong>
+
+<p>
+  SCORPION PROTOCOL • PREMIUM FILE DATABASE • ALL RIGHTS RESERVED
+</p>
+
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+
+    /*
+      ============================================
+      SAVAGE TECH MAIN ENGINE
+      ============================================
+
+      Expected Server.js API:
+
+      GET  /api/files
+      GET  /api/files/:id/download
+      GET  /api/stats
+      GET  /api/connection
+
+      Example file object:
+
+      {
+        id: "123",
+        name: "Econet Premium",
+        country: "Zimbabwe",
+        network: "Econet",
+        type: "ovpn",
+        size: "14 KB",
+        version: "2.1",
+        downloads: 124,
+        uploadedAt: "2026-09-09T13:00:00Z",
+        featured: true
+      }
+    */
+
+    const API_BASE = "";
+
+    const demoFiles = [
+      {
+        id: "demo-1",
+        name: "Econet Premium Config",
+        country: "Zimbabwe",
+        network: "Econet",
+        type: "ovpn",
+        size: "14 KB",
+        version: "2.1",
+        downloads: 124,
+        uploadedAt: Date.now() - 4 * 60 * 1000,
+        featured: true
+      },
+      {
+        id: "demo-2",
+        name: "MTN Tunnel Config",
+        country: "South Africa",
+        network: "MTN",
+        type: "ehi",
+        size: "8 KB",
+        version: "1.4",
+        downloads: 87,
+        uploadedAt: Date.now() - 16 * 60 * 1000,
+        featured: true
+      },
+      {
+        id: "demo-3",
+        name: "NetOne Secure Profile",
+        country: "Zimbabwe",
+        network: "NetOne",
+        type: "hat",
+        size: "21 KB",
+        version: "3.0",
+        downloads: 63,
+        uploadedAt: Date.now() - 31 * 60 * 1000,
+        featured: false
+      }
+    ];
+
+    let files = [];
+
+    const searchInput = document.getElementById("searchInput");
+    const countryFilter = document.getElementById("countryFilter");
+    const typeFilter = document.getElementById("typeFilter");
+    const networkFilter = document.getElementById("networkFilter");
+    const sortFilter = document.getElementById("sortFilter");
+
+    function escapeHTML(value) {
+      const div = document.createElement("div");
+      div.textContent = value ?? "";
+      return div.innerHTML;
+    }
+
+    function timeAgo(date) {
+
+      const seconds = Math.floor(
+        (Date.now() - new Date(date).getTime()) / 1000
+      );
+
+      if (seconds < 60) {
+        return `${Math.max(seconds, 1)} sec ago`;
+      }
+
+      const minutes = Math.floor(seconds / 60);
+
+      if (minutes < 60) {
+        return `${minutes} min ago`;
+      }
+
+      const hours = Math.floor(minutes / 60);
+
+      if (hours < 24) {
+        return `${hours} hr ago`;
+      }
+
+      const days = Math.floor(hours / 24);
+
+      return `${days} day${days === 1 ? "" : "s"} ago`;
+    }
+
+    function renderFileCard(file) {
+
+      const type = String(file.type || "file")
+        .replace(".", "")
+        .toUpperCase();
+
+      const country = escapeHTML(file.country || "Unknown");
+      const name = escapeHTML(file.name || "Unnamed File");
+      const network = escapeHTML(file.network || "Unknown");
+      const size = escapeHTML(file.size || "Unknown");
+      const version = escapeHTML(file.version || "1.0");
+
+      const isNew =
+        Date.now() - new Date(file.uploadedAt).getTime()
+        < 24 * 60 * 60 * 1000;
+
+      return `
+        <article
+          class="file-card"
+          data-name="${escapeHTML(file.name)}"
+          data-country="${country}"
+          data-network="${network}"
+          data-type="${type.toLowerCase()}">
+
+          <div class="badge-row">
+
+            <span class="badge ${isNew ? "badge-new" : "badge-popular"}">
+              ${isNew ? "NEW" : "AVAILABLE"}
+            </span>
+
+            <span class="badge badge-popular">
+              .${type}
+            </span>
+
+          </div>
+
+          <div class="file-icon">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M6 2h9l4 4v16H6z"></path>
+              <path d="M15 2v5h5"></path>
+              <path d="M9 13h6M9 17h6"></path>
+            </svg>
+
+          </div>
+
+          <h3>${name}</h3>
+
+          <div class="country">
+            🌍 ${country} • 📡 ${network}
+          </div>
+
+          <div class="meta">
+
+            <div>
+              <span>File Type</span>
+              <strong>.${type}</strong>
+            </div>
+
+            <div>
+              <span>Size</span>
+              <strong>${size}</strong>
+            </div>
+
+            <div>
+              <span>Version</span>
+              <strong>${version}</strong>
+            </div>
+
+            <div>
+              <span>Downloads</span>
+              <strong>${Number(file.downloads || 0).toLocaleString()}</strong>
+            </div>
+
+          </div>
+
+          <div style="
+            margin-top:9px;
+            color:#666;
+            font-size:8px;
+          ">
+            🕐 ${timeAgo(file.uploadedAt)}
+          </div>
+
+          <button
+            class="download-btn"
+            data-id="${escapeHTML(file.id)}"
+            onclick="downloadFile('${escapeHTML(file.id)}', this)">
+            ↓ &nbsp; DOWNLOAD FILE
+          </button>
+
+        </article>
+      `;
+    }
+
+    function render(list, elementId) {
+
+      const element = document.getElementById(elementId);
+
+      if (!element) return;
+
+      element.innerHTML = list
+        .map(renderFileCard)
+        .join("");
+    }
+
+    function filteredFiles() {
+
+      const query = searchInput.value.trim().toLowerCase();
+      const country = countryFilter.value.toLowerCase();
+      const type = typeFilter.value.toLowerCase();
+      const network = networkFilter.value.toLowerCase();
+
+      let result = files.filter(file => {
+
+        const searchable = [
+          file.name,
+          file.country,
+          file.network,
+          file.type
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return (
+          (!query || searchable.includes(query)) &&
+          (!country || String(file.country).toLowerCase() === country) &&
+          (!type || String(file.type).toLowerCase().replace(".", "") === type.replace(".", "")) &&
+          (!network || String(file.network).toLowerCase() === network)
+        );
+      });
+
+      if (sortFilter.value === "popular") {
+
+        result.sort(
+          (a, b) => Number(b.downloads || 0) - Number(a.downloads || 0)
+        );
+
+      } else if (sortFilter.value === "name") {
+
+        result.sort(
+          (a, b) => String(a.name).localeCompare(String(b.name))
+        );
+
+      } else {
+
+        result.sort(
+          (a, b) =>
+            new Date(b.uploadedAt).getTime() -
+            new Date(a.uploadedAt).getTime()
+        );
+
+      }
+
+      return result;
+    }
+
+    function renderAll() {
+
+      const result = filteredFiles();
+
+      const featured = result.filter(file => file.featured);
+
+      const popular = [...result]
+        .sort(
+          (a, b) => Number(b.downloads || 0) - Number(a.downloads || 0)
+        )
+        .slice(0, 6);
+
+      render(featured.slice(0, 6), "featuredFiles");
+      render(result.slice(0, 9), "recentFiles");
+      render(popular, "popularFiles");
+
+      document.getElementById("emptyState").style.display =
+        result.length ? "none" : "block";
+    }
+
+    async function loadFiles() {
+
+      try {
+
+        const response = await fetch(`${API_BASE}/api/files`, {
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("API unavailable");
+        }
+
+        const data = await response.json();
+
+        files = Array.isArray(data)
+          ? data
+          : Array.isArray(data.files)
+            ? data.files
+            : [];
+
+        if (!files.length) {
+          files = demoFiles;
+        }
+
+      } catch (error) {
+
+        /*
+          Temporary fallback so the UI still works before
+          Server.js is connected.
+        */
+
+        files = demoFiles;
+
+        document.getElementById("recentStatus").textContent =
+          "DEMO DATABASE";
+
+      }
+
+      updateStats();
+      renderAll();
+    }
+
+    function updateStats() {
+
+      const countries = new Set(
+        files.map(file => file.country).filter(Boolean)
+      );
+
+      const downloads = files.reduce(
+        (sum, file) => sum + Number(file.downloads || 0),
+        0
+      );
+
+      document.getElementById("totalFiles").textContent =
+        files.length.toLocaleString();
+
+      document.getElementById("totalCountries").textContent =
+        countries.size.toLocaleString();
+
+      document.getElementById("totalDownloads").textContent =
+        downloads.toLocaleString();
+    }
+
+    async function downloadFile(id, button) {
+
+      if (!id) return;
+
+      button.classList.add("loading");
+      button.textContent = "◌  VERIFYING...";
+
+      await new Promise(resolve => setTimeout(resolve, 550));
+
+      button.textContent = "↓  PREPARING DOWNLOAD...";
+
+      try {
+
+        /*
+          Server.js should validate the ID and increment
+          the download counter server-side.
+        */
+
+        const url =
+          `${API_BASE}/api/files/${encodeURIComponent(id)}/download`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("Download unavailable");
+        }
+
+        const blob = await response.blob();
+
+        const objectURL = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = objectURL;
+        link.download = "";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(objectURL);
+
+        button.textContent = "✓  DOWNLOAD COMPLETE";
+
+        showToast("✓ Download started successfully.");
+
+        setTimeout(() => {
+          button.textContent = "↓  DOWNLOAD FILE";
+          button.classList.remove("loading");
+        }, 1800);
+
+      } catch (error) {
+
+        /*
+          Demo fallback:
+          Real production downloads should always come
+          from Server.js.
+        */
+
+        const demoFile = files.find(file => file.id === id);
+
+        if (demoFile && String(id).startsWith("demo-")) {
+
+          button.classList.remove("loading");
+          button.textContent = "✓  DEMO READY";
+
+          showToast(
+            "Demo file card active. Connect Server.js to enable real downloads."
+          );
+
+          setTimeout(() => {
+            button.textContent = "↓  DOWNLOAD FILE";
+          }, 1800);
+
+          return;
+        }
+
+        button.classList.remove("loading");
+        button.textContent = "⚠  TRY AGAIN";
+
+        showToast("Unable to start the download.");
+
+        setTimeout(() => {
+          button.textContent = "↓  DOWNLOAD FILE";
+        }, 1800);
+      }
+    }
+
+    function showToast(message) {
+
+      const toast = document.getElementById("toast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    /* =========================
+       BASIC DEVICE INFORMATION
+    ========================== */
+
+    function detectDevice() {
+
+      const ua = navigator.userAgent;
+
+      if (/Android/i.test(ua)) {
+        return "Android";
+      }
+
+      if (/iPhone|iPad|iPod/i.test(ua)) {
+        return "iOS";
+      }
+
+      if (/Windows/i.test(ua)) {
+        return "Windows";
+      }
+
+      if (/Mac/i.test(ua)) {
+        return "macOS";
+      }
+
+      if (/Linux/i.test(ua)) {
+        return "Linux";
+      }
+
+      return "Unknown";
+    }
+
+    document.getElementById("device").textContent =
+      detectDevice();
+
+
+    /* =========================
+       BATTERY API
+    ========================== */
+
+    async function detectBattery() {
+
+      const element = document.getElementById("battery");
+
+      try {
+
+        if (!navigator.getBattery) {
+          element.textContent = "Unavailable";
+          return;
+        }
+
+        const battery = await navigator.getBattery();
+
+        function update() {
+
+          const percentage =
+            Math.round(battery.level * 100);
+
+          element.textContent =
+            `${percentage}%${battery.charging ? " ⚡" : ""}`;
+        }
+
+        update();
+
+        battery.addEventListener("levelchange", update);
+        battery.addEventListener("chargingchange", update);
+
+      } catch {
+
+        element.textContent = "Unavailable";
+      }
+    }
+
+    detectBattery();
+
+
+    /* =========================
+       COUNTRY / IP
+       ==========================
+
+       Production recommendation:
+       Let Server.js determine the IP and
+       approximate country. Do not request GPS.
+
+       Endpoint expected:
+
+       GET /api/connection
+
+       Response:
+
+       {
+         "country": "Zimbabwe",
+         "ipMasked": "102.xxx.xxx.xxx"
+       }
+    */
+
+    async function loadConnection() {
+
+      try {
+
+        const response =
+          await fetch(`${API_BASE}/api/connection`);
+
+        if (!response.ok) {
+          throw new Error("Connection endpoint unavailable");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("userIP").textContent =
+          data.ipMasked || "Protected";
+
+        document.getElementById("userCountry").textContent =
+          data.country || "Unknown";
+
+        document.getElementById("verifyStatus").textContent =
+          "● VERIFIED CONNECTION";
+
+      } catch {
+
+        /*
+          Don't expose an IP through a random
+          third-party browser service.
+        */
+
+        document.getElementById("userIP").textContent =
+          "Protected";
+
+        document.getElementById("userCountry").textContent =
+          "Unknown";
+
+        document.getElementById("verifyStatus").textContent =
+          "● CONNECTION ACTIVE";
+      }
+    }
+
+    loadConnection();
+
+
+    /* =========================
+       FILTER EVENTS
+    ========================== */
+
+    [
+      searchInput,
+      countryFilter,
+      typeFilter,
+      networkFilter,
+      sortFilter
+    ].forEach(element => {
+
+      element.addEventListener("input", renderAll);
+      element.addEventListener("change", renderAll);
+
+    });
+
+
+    /* =========================
+       COUNTRY QUICK FILTER
+    ========================== */
+
+    document.querySelectorAll(".country-card")
+      .forEach(card => {
+
+        card.addEventListener("click", () => {
+
+          countryFilter.value =
+            card.dataset.country;
+
+          renderAll();
+
+          document
+            .getElementById("recentFiles")
+            .scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+        });
+
+      });
+
+
+    /* =========================
+       FILE TYPE QUICK FILTER
+    ========================== */
+
+    document.querySelectorAll(".type")
+      .forEach(type => {
+
+        type.addEventListener("click", () => {
+
+          typeFilter.value =
+            type.dataset.type;
+
+          renderAll();
+
+          document
+            .getElementById("recentFiles")
+            .scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+        });
+
+      });
+
+
+    /* =========================
+       VIDEO
+    ========================== */
+
+    const heroVideo =
+      document.getElementById("heroVideo");
+
+    heroVideo.play().catch(() => {
+      /*
+        Mobile browsers may block autoplay.
+        Controls remain intentionally minimal
+        because this is a decorative hero.
+      */
+    });
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================== */
+
+    loadFiles();
+
+  </script>
+
+</body>
+</html>
